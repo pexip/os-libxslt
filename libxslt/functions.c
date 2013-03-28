@@ -260,7 +260,7 @@ xsltDocumentFunction(xmlXPathParserContextPtr ctxt, int nargs)
         obj = valuePop(ctxt);
         ret = xmlXPathNewNodeSet(NULL);
 
-        if (obj->nodesetval) {
+        if ((obj != NULL) && obj->nodesetval) {
             for (i = 0; i < obj->nodesetval->nodeNr; i++) {
                 valuePush(ctxt,
                           xmlXPathNewNodeSet(obj->nodesetval->nodeTab[i]));
@@ -280,7 +280,8 @@ xsltDocumentFunction(xmlXPathParserContextPtr ctxt, int nargs)
             }
         }
 
-        xmlXPathFreeObject(obj);
+        if (obj != NULL)
+            xmlXPathFreeObject(obj);
         if (obj2 != NULL)
             xmlXPathFreeObject(obj2);
         valuePush(ctxt, ret);
@@ -654,13 +655,14 @@ xsltFormatNumberFunction(xmlXPathParserContextPtr ctxt, int nargs)
 void
 xsltGenerateIdFunction(xmlXPathParserContextPtr ctxt, int nargs){
     xmlNodePtr cur = NULL;
-    unsigned long val;
-    xmlChar str[20];
+    xmlXPathObjectPtr obj = NULL;
+    long val;
+    xmlChar str[30];
+    xmlDocPtr doc;
 
     if (nargs == 0) {
 	cur = ctxt->context->node;
     } else if (nargs == 1) {
-	xmlXPathObjectPtr obj;
 	xmlNodeSetPtr nodelist;
 	int i, ret;
 
@@ -683,7 +685,6 @@ xsltGenerateIdFunction(xmlXPathParserContextPtr ctxt, int nargs){
 	    if (ret == -1)
 	        cur = nodelist->nodeTab[i];
 	}
-	xmlXPathFreeObject(obj);
     } else {
 	xsltTransformError(xsltXPathGetTransformContext(ctxt), NULL, NULL,
 		"generate-id() : invalid number of args %d\n", nargs);
@@ -694,9 +695,27 @@ xsltGenerateIdFunction(xmlXPathParserContextPtr ctxt, int nargs){
      * Okay this is ugly but should work, use the NodePtr address
      * to forge the ID
      */
-    val = (unsigned long)((char *)cur - (char *)0);
-    val /= sizeof(xmlNode);
-    sprintf((char *)str, "id%ld", val);
+    if (cur->type != XML_NAMESPACE_DECL)
+        doc = cur->doc;
+    else {
+        xmlNsPtr ns = (xmlNsPtr) cur;
+
+        if (ns->context != NULL)
+            doc = ns->context;
+        else
+            doc = ctxt->context->doc;
+
+    }
+
+    if (obj)
+        xmlXPathFreeObject(obj);
+
+    val = (long)((char *)cur - (char *)doc);
+    if (val >= 0) {
+      sprintf((char *)str, "idp%ld", val);
+    } else {
+      sprintf((char *)str, "idm%ld", -val);
+    }
     valuePush(ctxt, xmlXPathNewString(str));
 }
 
