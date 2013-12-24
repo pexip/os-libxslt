@@ -1,14 +1,16 @@
 Source: libxslt
 Section: text
 Priority: optional
-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Maintainer: Pexip AS <packaging@pexip.com>
+XSBC-Pexip-Original-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Debian XML/SGML Group <debian-xml-sgml-pkgs@lists.alioth.debian.org>
-Uploaders: Mike Hommey <glandium@debian.org>
+XSBC-Pexip-Original-Uploaders: Mike Hommey <glandium@debian.org>
 Standards-Version: 3.9.2.0
 Build-Depends: debhelper (>= 8.1.3~), libxml2-dev (>= 2.6.27), python-all-dev (>= 2.6.6-3~), python-all-dbg, libgcrypt11-dev, autotools-dev, binutils (>= 2.14.90.0.7), perl
 Homepage: http://xmlsoft.org/xslt/
 Vcs-Git: git://git.debian.org/debian-xml-sgml/libxslt.git
 Vcs-Browser: http://git.debian.org/?p=debian-xml-sgml/libxslt.git
+XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
 
 Package: libxslt1.1
 Section: libs
