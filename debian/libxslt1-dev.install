@@ -1,8 +1,6 @@
 usr/include
 usr/lib/*/libxslt.a
 usr/lib/*/libexslt.a
-usr/lib/*/libxslt.la
-usr/lib/*/libexslt.la
 usr/lib/*/libxslt.so
 usr/lib/*/libexslt.so
 usr/lib/*/pkgconfig

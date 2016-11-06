@@ -1,58 +1,115 @@
-libxslt (1.1.26-8ubuntu1.3) precise-security; urgency=low
+libxslt (1.1.28-2+deb8u2) jessie-security; urgency=high
 
-  * SECURITY UPDATE: denial of service via malformed stylesheet
-    - libxslt/functions.c, libxslt/keys.c: check for empty values
-      tests/*: add tests
-    - dc11b6b379a882418093ecc8adf11f6166682e8d
-    - 6c99c519d97e5fcbec7a9537d190efb442e4e833
-    - CVE-2012-6139
+  * Non-maintainer upload by the Security Team.
+  * Fix heap overread in xsltFormatNumberConversion (CVE-2016-4738)
+    (Closes: #842570)
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 28 Mar 2013 13:05:27 -0400
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 06 Nov 2016 21:43:39 +0100
 
-libxslt (1.1.26-8ubuntu1.2) precise-security; urgency=low
+libxslt (1.1.28-2+deb8u1) jessie-security; urgency=high
 
-  * SECURITY UPDATE: denial of service via out-of-bounds read
-    - libxslt/pattern.c: fix improper loop exit.
-    - fe5a4fa33eb85bce3253ed3742b1ea6c4b59b41b
-    - CVE-2011-3970
-  * SECURITY UPDATE: denial of service via out-of-bounds read
-    - libxslt/xsltutils.h: check for XML_ELEMENT_NODE
-    - e6a0bc8081271f33b9899eb78e1da1a2a0428419
-    - CVE-2012-2825
-  * SECURITY UPDATE: denial of service via crafted XSLT expression
-    - harden code in libexslt/functions.c, libxslt/attributes.c,
-      libxslt/functions.c, libxslt/pattern.c, libxslt/preproc.c,
-      libxslt/templates.c, libxslt/transform.c, libxslt/variables.c,
-      libxslt/xslt.c, libxslt/xsltutils.c.
-    - 8566ab4a10158d195adb5f1f61afe1ee8bfebd12
-    - 4da0f7e207f14a03daad4663865c285eb27f93e9
-    - 24653072221e76d2f1f06aa71225229b532f8946
-    - 1564b30e994602a95863d9716be83612580a2fed
-    - CVE-2012-2870
-  * SECURITY UPDATE: denial of service and possible code execution during
-    handling of XSL transforms
-    - libxslt/transform.c: check for XML_NAMESPACE_DECL
-    - 937ba2a3eb42d288f53c8adc211bd1122869f0bf
-    - CVE-2012-2871
-  * SECURITY UPDATE: denial of service and possible code execution via
-    double free during XSL transforms
-    - libxslt/templates.c: Fix dictionary string usage
-    - 54977ed7966847e305a2008cb18892df26eeb065
-    - CVE-2012-2893
+  * Non-maintainer upload by the Security Team.
+  * Fix for type confusion in preprocessing attributes (CVE-2015-7995)
+    (Closes: #802971)
+  * Always initialize EXSLT month and day to 1
+  * Fix use-after-free in xsltDocumentFunctionLoadDocument
+  * Fix xsltNumberFormatGetMultipleLevel (CVE-2016-1683)
+  * Round xsl:number values to nearest integer
+  * Handle negative xsl:number values
+  * Lower bound for format token "a"
+  * Lower and upper bound for format token "i" (CVE-2016-1684)
+  * Fix double free in libexslt hash functions
+  * Fix buffer overflow in exsltDateFormat
+  * Fix OOB heap read in xsltExtModuleRegisterDynamic
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 28 Sep 2012 15:13:38 -0400
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 18 Jun 2016 19:27:31 +0200
 
-libxslt (1.1.26-8ubuntu1.1) precise-proposed; urgency=low
+libxslt (1.1.28-2) unstable; urgency=low
 
-  * debian/control: mark libxslt1-dev as not M-A (LP: #1014197).
+  * debian/patches/000[4-8].patch:
+    Upstream post release patches.
 
- -- Stéphane Graber <stgraber@ubuntu.com>  Wed, 18 Jul 2012 15:01:41 -0400
+ -- Aron Xu <aron@debian.org>  Thu, 01 Aug 2013 13:55:48 +0800
 
-libxslt (1.1.26-8ubuntu1) precise; urgency=low
+libxslt (1.1.28-1) experimental; urgency=low
 
-  * Build for multiarch.
+  [ YunQiang Su ]
+  * Imported Upstream version 1.1.28
+  * Workaround xsltMaxVars version number (Closes: #698955)
+  * Refresh patches
+  * Correct email address of YunQiang Su
+  * Mark libxslt1-dev as Multi-Arch: same (Closes: #689091)
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 07 Nov 2011 12:48:22 -0800
+  [ Aron Xu ]
+  * Use canonical VCS-* fields.
+  * Remove unused override: python-libxslt1-dbg: hardening-no-relro
+
+ -- Aron Xu <happyaron.xu@gmail.com>  Thu, 01 Aug 2013 13:45:01 +0800
+
+libxslt (1.1.27-1) experimental; urgency=low
+
+  * New upstream release (Closes: #448205, #683353)
+  * debian/rules:
+    + Add hardening flags for dbg package in LDFLAGS (Closes: #681163)
+  * debian/control:
+    - std-ver: 3.9.3 -> 3.9.4, no change required.
+
+ -- Aron Xu <aron@debian.org>  Wed, 03 Oct 2012 00:22:53 +0800
+
+libxslt (1.1.26-13) unstable; urgency=low
+
+  * Patch to fix CVE-2012-2825 (Closes: #679283).
+
+ -- Aron Xu <aron@debian.org>  Thu, 05 Jul 2012 11:09:19 +0800
+
+libxslt (1.1.26-12) unstable; urgency=low
+
+  [ Aron Xu ]
+  * New maintainer (Closes: #654177)
+  * debian/rules: small improvements, stop shipping .la files.
+  * debian/control: mark libxslt1-dev as not M-A (Closes: #671902).
+  
+  [ YunQiang Su ]
+  * Convert to 3.0 source format. 
+  * Byte-compile Python modules again (Closes: #671901).
+
+ -- Aron Xu <aron@debian.org>  Tue, 29 May 2012 00:31:36 +0800
+
+libxslt (1.1.26-11) unstable; urgency=low
+
+  * QA upload.
+  * Bump standards version to 3.9.3. 
+  * Apply Steve Langasek's patch to enable multiarch (closes: #643034).
+  * Fix cve-2011-3970: out-of-bounds array access issue (closes: #660650). 
+  * Bump debian/compat to 9 and enable hardened build flags (closes: #655601).
+  * Eliminate system config.sub and config.guess from the debian diff
+    (closes: #670799).
+
+ -- Michael Gilbert <mgilbert@debian.org>  Sun, 06 May 2012 20:35:38 -0400
+
+libxslt (1.1.26-10) unstable; urgency=low
+
+  * QA upload.
+  * Fix building for real: (Closes: #666333)
+    - make(1) targets accumulate, they do not replace
+    - You absolutely must not have a build-% (wildcard) target!
+    - Never have a directory (or file) with the same name as a
+      (phony) target, as it *will* prevent the target from being
+      run while that file/directory exists, with varying messages
+    => rename ./build/ to builddir and build-% to dobuild-%
+    Discovered while trying to hand-fix an m68k build.
+  * Throw in some lintian fixes (manpage, spelling) for good measure.
+
+ -- Thorsten Glaser <tg@mirbsd.de>  Sun, 06 May 2012 16:02:55 +0000
+
+libxslt (1.1.26-9) unstable; urgency=low
+
+  * QA upload.
+  * Set maintainer to Debian QA Group <packages@qa.debian.org>
+  * Clear uploaders
+  * Fix building with build-arch. Closes: 666333.
+
+ -- Peter Michael Green <plugwash@p10link.net>  Tue, 24 Apr 2012 23:23:50 +0000
 
 libxslt (1.1.26-8) unstable; urgency=low
 
