@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 8.1.3~), libxml2-dev (>= 2.6.27), python-all-dev (>
 Homepage: http://xmlsoft.org/xslt/
 Vcs-Git: git://git.debian.org/debian-xml-sgml/libxslt.git
 Vcs-Browser: http://git.debian.org/?p=debian-xml-sgml/libxslt.git
-XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ jessie
 
 Package: libxslt1.1
 Section: libs
