@@ -1,36 +1,70 @@
-libxslt (1.1.28-2+deb8u3) jessie; urgency=medium
+libxslt (1.1.29-2.1) unstable; urgency=high
 
   * Non-maintainer upload.
   * Check for integer overflow in xsltAddTextString (CVE-2017-5029)
     (Closes: #858546)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 14 Apr 2017 08:28:09 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 26 Mar 2017 19:44:01 +0200
 
-libxslt (1.1.28-2+deb8u2) jessie-security; urgency=high
+libxslt (1.1.29-2) unstable; urgency=high
 
-  * Non-maintainer upload by the Security Team.
-  * Fix heap overread in xsltFormatNumberConversion (CVE-2016-4738)
-    (Closes: #842570)
+  * Team upload.
+  * Bump debhelper compat level to 10.
+    + --parallel is now default
+    + --with autoreconf is now default
+  * Add patch from upstream to fix a heap overread which could cause remote
+    arbitrary code execution or denial of service.
+    Closes: #842570 — CVE-2016-4738
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 06 Nov 2016 21:43:39 +0100
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 30 Oct 2016 14:01:00 +0000
 
-libxslt (1.1.28-2+deb8u1) jessie-security; urgency=high
+libxslt (1.1.29-1) unstable; urgency=medium
 
-  * Non-maintainer upload by the Security Team.
-  * Fix for type confusion in preprocessing attributes (CVE-2015-7995)
-    (Closes: #802971)
-  * Always initialize EXSLT month and day to 1
-  * Fix use-after-free in xsltDocumentFunctionLoadDocument
-  * Fix xsltNumberFormatGetMultipleLevel (CVE-2016-1683)
-  * Round xsl:number values to nearest integer
-  * Handle negative xsl:number values
-  * Lower bound for format token "a"
-  * Lower and upper bound for format token "i" (CVE-2016-1684)
-  * Fix double free in libexslt hash functions
-  * Fix buffer overflow in exsltDateFormat
-  * Fix OOB heap read in xsltExtModuleRegisterDynamic
+  * Imported Upstream version 1.1.29 (Closes: #826446)
+  * Remove patches which have been merged upstream
+  * Remove plugin option in xslt-config as it has arch-dep string
+  * Link libxslt with libm (Closes: #801989, #721602)
+  * Add --parallel in debian/rules.
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 18 Jun 2016 19:27:31 +0200
+ -- YunQiang Su <syq@debian.org>  Wed, 17 Aug 2016 15:30:11 +0800
+
+libxslt (1.1.28-4) unstable; urgency=medium
+
+  * Team upload.
+  * Replace the SOURCE_DATE_EPOCH patch with the one actually committed upstream
+
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 20 May 2016 09:33:00 +0000
+
+libxslt (1.1.28-3) unstable; urgency=medium
+
+  [ Gianfranco Costamagna ]
+  * Team upload.
+  * Upload to unstable.
+  * Bump std-version to 3.9.8.
+  * Acknowledge previous NMU, thanks carnil!
+  * Add dh-python to build-depends
+
+  [ Jérémy Bobbio ]
+  * Add a patch from upstream to make generate-id() provide stable IDs.
+    Thanks to Daniel Veillard.  Closes: #823857
+
+  [ Dhole ]
+  * Honour SOURCE_DATE_EPOCH when embedding timestamps in docs.  Closes: #791815
+
+  [ Mattia Rizzolo ]
+  * Run wrap-and-sort.
+  * Use HTTPS in Vcs-* fields.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Mon, 09 May 2016 20:18:36 +0000
+
+libxslt (1.1.28-2.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Add 0009-Fix-for-type-confusion-in-preprocessing-attributes.patch patch.
+    CVE-2015-7995: Type confusion in preprocessing attributes leading to
+    denial of service. (Closes: #802971)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 30 Oct 2015 08:46:43 +0100
 
 libxslt (1.1.28-2) unstable; urgency=low
 

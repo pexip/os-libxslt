@@ -1,0 +1,16 @@
+Index: b/xslt-config.in
+===================================================================
+--- a/xslt-config.in
++++ b/xslt-config.in
+@@ -64,11 +64,6 @@ while test $# -gt 0; do
+ 	exit 0
+ 	;;
+ 
+-    --plugins)
+-	echo @LIBXSLT_DEFAULT_PLUGINS_PATH@
+-	exit 0
+-	;;
+-
+     --help)
+ 	usage 0
+ 	;;

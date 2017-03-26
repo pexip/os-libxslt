@@ -100,4 +100,4 @@ override_dh_makeshlibs:
 	dh_makeshlibs -a -V 'libxslt1.1 (>= 1.1.26)' -- -c4
 
 %:
-	dh $@ --with autoreconf,python2
+	dh $@ --with python2
