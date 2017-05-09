@@ -1,3 +1,17 @@
+libxslt (1.1.28-2+deb8u3pexip1) pexip; urgency=low
+
+  * New upstream release
+
+ -- John-Mark Bell <jmb@pexip.com>  Tue, 09 May 2017 16:38:31 +0100
+
+libxslt (1.1.28-2+deb8u3) jessie; urgency=medium
+
+  * Non-maintainer upload.
+  * Check for integer overflow in xsltAddTextString (CVE-2017-5029)
+    (Closes: #858546)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 14 Apr 2017 08:28:09 +0200
+
 libxslt (1.1.28-2+deb8u2pexip1) pexip; urgency=low
 
   * Migrate to Jessie
