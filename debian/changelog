@@ -1,3 +1,9 @@
+libxslt (1.1.28-2+deb8u3pexip2) pexip; urgency=low
+
+  * Backport fixes for CVE-2016-4607, CVE-2016-4609, CVE-2016-4610 
+
+ -- John-Mark Bell <jmb@pexip.com>  Mon, 15 Jan 2018 14:42:07 +0000
+
 libxslt (1.1.28-2+deb8u3pexip1) pexip; urgency=low
 
   * New upstream release

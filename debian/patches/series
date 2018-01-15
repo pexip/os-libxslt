@@ -19,3 +19,6 @@
 0019-Fix-OOB-heap-read-in-xsltExtModuleRegisterDynamic.patch
 0020-Fix-heap-overread-in-xsltFormatNumberConversion.patch
 0021-Check-for-integer-overflow-in-xsltAddTextString.patch
+fix-saxon-error-handling.patch
+fix-dyn-map-with-namespace-nodes.patch
+fix-saxon-line-number-with-namespace-nodes.patch
