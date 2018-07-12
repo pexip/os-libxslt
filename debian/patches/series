@@ -6,5 +6,4 @@
 0006-remove-plugin-in-xslt-config.patch
 0007-Fix-heap-overread-in-xsltFormatNumberConversion.patch
 0008-Check-for-integer-overflow-in-xsltAddTextString.patch
-fix-dyn-map-with-namespace-nodes.patch
 fix-saxon-line-number-with-namespace-nodes.patch
