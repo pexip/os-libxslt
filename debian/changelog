@@ -4,6 +4,8 @@ libxslt (1.1.29-2.1) unstable; urgency=medium
   * debian/patches/fix-saxon-error-handling.patch: Drop; merged upstream
   * debian/patches/fix-dyn-map-with-namespace-nodes.patch: Drop; merged
     upstream
+  * debian/patches/fix-saxon-line-number-with-namespace-nodes.patch: Drop;
+    merged upstream
 
  -- John-Mark Bell <jmb@pexip.com>  Thu, 12 Jul 2018 15:56:42 +0100
 
