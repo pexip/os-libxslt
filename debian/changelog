@@ -1,4 +1,4 @@
-libxslt (1.1.29-2.1) unstable; urgency=medium
+libxslt (1.1.29-2.1pexip1) unstable; urgency=medium
 
   * Migrate to Stretch
   * debian/patches/fix-saxon-error-handling.patch: Drop; merged upstream
