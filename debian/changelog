@@ -1,3 +1,14 @@
+libxslt (1.1.29-2.1+deb9u1) stretch; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix security framework bypass (CVE-2019-11068) (Closes: #926895, #933743)
+  * Fix uninitialized read of xsl:number token (CVE-2019-13117)
+    (Closes: #931321, #933743)
+  * Fix uninitialized read with UTF-8 grouping chars (CVE-2019-13118)
+    (Closes: #931320, #933743)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 24 Aug 2019 14:04:13 +0200
+
 libxslt (1.1.29-2.1) unstable; urgency=high
 
   * Non-maintainer upload.
