@@ -1,18 +1,26 @@
-Description: Make generate-id() provide stable IDs
-Author: Daniel Veillard
+From: Daniel Veillard <veillard@redhat.com>
+Date: Sun, 29 Oct 2017 01:04:54 +0200
+Subject: Make generate-id deterministic
+
 Origin: upstream, https://bugzilla.gnome.org/attachment.cgi?id=306475
 Bug: https://bugzilla.gnome.org/show_bug.cgi?id=751621
 Bug-Debian: https://bugs.debian.org/823857
-Last-Update: 2015-07-01
+---
+ libxslt/functions.c     | 91 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ libxslt/functions.h     |  7 ++++
+ libxslt/transform.c     |  8 +++++
+ libxslt/xsltInternals.h |  2 ++
+ 4 files changed, 107 insertions(+), 1 deletion(-)
 
-Index: b/libxslt/functions.c
-===================================================================
+diff --git a/libxslt/functions.c b/libxslt/functions.c
+index 43d82f6..3906644 100644
 --- a/libxslt/functions.c
 +++ b/libxslt/functions.c
-@@ -652,6 +652,63 @@ xsltFormatNumberFunction(xmlXPathParserC
+@@ -670,6 +670,63 @@ xsltFormatNumberFunction(xmlXPathParserContextPtr ctxt, int nargs)
+     xmlXPathFreeObject(decimalObj);
  }
  
- /**
++/**
 + * xsltCleanupIds:
 + * @ctxt: the transformation context
 + * @root: the root of the resulting document
@@ -69,11 +77,10 @@ Index: b/libxslt/functions.c
 +    return(count);
 +}
 +
-+/**
+ /**
   * xsltGenerateIdFunction:
   * @ctxt:  the XPath Parser context
-  * @nargs:  the number of arguments
-@@ -702,7 +759,39 @@ xsltGenerateIdFunction(xmlXPathParserCon
+@@ -721,7 +778,39 @@ xsltGenerateIdFunction(xmlXPathParserContextPtr ctxt, int nargs){
      if (obj)
          xmlXPathFreeObject(obj);
  
@@ -114,29 +121,29 @@ Index: b/libxslt/functions.c
      if (val >= 0) {
        snprintf((char *)str, sizeof(str), "idp%ld", val);
      } else {
-Index: b/libxslt/functions.h
-===================================================================
+diff --git a/libxslt/functions.h b/libxslt/functions.h
+index e0e0bf9..4a1e163 100644
 --- a/libxslt/functions.h
 +++ b/libxslt/functions.h
-@@ -64,6 +64,13 @@ XSLTPUBFUN void XSLTCALL
+@@ -63,6 +63,13 @@ XSLTPUBFUN void XSLTCALL
+ 	xsltFunctionAvailableFunction	(xmlXPathParserContextPtr ctxt,
  					 int nargs);
  
- /*
++/*
 + * Cleanup for ID generation
 + */
 +XSLTPUBFUN int XSLTCALL
 +	xsltCleanupIds			(xsltTransformContextPtr ctxt,
 +					 xmlNodePtr root);
 +
-+/*
+ /*
   * And the registration
   */
- 
-Index: b/libxslt/transform.c
-===================================================================
+diff --git a/libxslt/transform.c b/libxslt/transform.c
+index 560f43c..4f7806d 100644
 --- a/libxslt/transform.c
 +++ b/libxslt/transform.c
-@@ -700,6 +700,7 @@ xsltNewTransformContext(xsltStylesheetPt
+@@ -702,6 +702,7 @@ xsltNewTransformContext(xsltStylesheetPtr style, xmlDocPtr doc) {
      cur->traceCode = (unsigned long*) &xsltDefaultTrace;
      cur->xinclude = xsltGetXIncludeDefault();
      cur->keyInitLevel = 0;
@@ -144,7 +151,7 @@ Index: b/libxslt/transform.c
  
      return(cur);
  
-@@ -6105,6 +6106,13 @@ xsltApplyStylesheetInternal(xsltStyleshe
+@@ -6092,6 +6093,13 @@ xsltApplyStylesheetInternal(xsltStylesheetPtr style, xmlDocPtr doc,
      if (root != NULL) {
          const xmlChar *doctype = NULL;
  
@@ -158,12 +165,12 @@ Index: b/libxslt/transform.c
          if ((root->ns != NULL) && (root->ns->prefix != NULL))
  	    doctype = xmlDictQLookup(ctxt->dict, root->ns->prefix, root->name);
  	if (doctype == NULL)
-Index: b/libxslt/xsltInternals.h
-===================================================================
+diff --git a/libxslt/xsltInternals.h b/libxslt/xsltInternals.h
+index 9a4d544..cbffe47 100644
 --- a/libxslt/xsltInternals.h
 +++ b/libxslt/xsltInternals.h
-@@ -1788,6 +1788,8 @@ struct _xsltTransformContext {
-     int funcLevel;      /* Needed to catch recursive functions issues */
+@@ -1789,6 +1789,8 @@ struct _xsltTransformContext {
+     int depth;          /* Needed to catch recursions */
      int maxTemplateDepth;
      int maxTemplateVars;
 +

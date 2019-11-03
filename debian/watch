@@ -1,2 +1,3 @@
-version=3
+version=4
+opts="pgpmode=auto" \
 ftp://xmlsoft.org/libxslt/libxslt-([\d\.]+)\.tar\.gz

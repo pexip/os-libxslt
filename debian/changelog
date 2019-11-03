@@ -1,11 +1,17 @@
-libxslt (1.1.29-2.1+deb9u2) stretch; urgency=medium
+libxslt (1.1.32-2.2~deb10u1) buster; urgency=medium
+
+  * Rebuild for buster 
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 03 Nov 2019 17:11:47 +0100
+
+libxslt (1.1.32-2.2) unstable; urgency=medium
 
   * Non-maintainer upload.
   * Fix dangling pointer in xsltCopyText (CVE-2019-18197) (Closes: #942646)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 04 Dec 2019 15:41:16 +0100
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 19 Oct 2019 21:21:23 +0200
 
-libxslt (1.1.29-2.1+deb9u1) stretch; urgency=medium
+libxslt (1.1.32-2.1) unstable; urgency=medium
 
   * Non-maintainer upload.
   * Fix security framework bypass (CVE-2019-11068) (Closes: #926895, #933743)
@@ -14,7 +20,86 @@ libxslt (1.1.29-2.1+deb9u1) stretch; urgency=medium
   * Fix uninitialized read with UTF-8 grouping chars (CVE-2019-13118)
     (Closes: #931320, #933743)
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 24 Aug 2019 14:04:13 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 04 Aug 2019 08:14:05 +0200
+
+libxslt (1.1.32-2) unstable; urgency=medium
+
+  * Team upload.
+  * Add missing Build-Depends on pkg-config.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 26 May 2018 23:12:37 +0200
+
+libxslt (1.1.32-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version 1.1.32.
+  * d/patches:
+    + Remove patches applied upstream.
+    + Rebase the remaining patches.
+  * Drop old debian/TODO file.
+  * d/rules: include workaround that should make the package build on kfreebsd.
+    Closes: #840096
+  * d/control:
+    + Bump Standards-Version to 4.1.4, no changes needed.
+    + Move Vcs-* to salsa.debian.org.
+  * d/libxslt1.1.symbols:
+    + Add new symbols added in this release.
+    + Remove symbols that were accidentally exported in previous releases.
+  * Bump debhelper compat level to 11.
+  * Drop the libxslt1-dbg package in favour of automatic dbgsym packages.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 26 May 2018 14:47:56 +0200
+
+libxslt (1.1.29-5) unstable; urgency=medium
+
+  * Team upload.
+  * Refresh patches using Gbp Pq.
+  * Add patch from upstream to fix FTBFS in ia64.  Closes: #881818
+  * Declare that libxslt can be built without root, R³:no.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Wed, 15 Nov 2017 16:27:00 +0100
+
+libxslt (1.1.29-4) unstable; urgency=medium
+
+  * Team upload.
+  * Upload to unstable.
+  * Add patch from upstream to fix FTBFS with glibc 2.26.  Closes: #880038
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 05 Nov 2017 13:36:40 +0100
+
+libxslt (1.1.29-3) experimental; urgency=medium
+
+  * Team upload.
+  * d/upstream/signing-key.asc: add Daniel Veillard's gpg key to allow
+    cryptographic verification of the upstream tarballs.
+  * d/patches/0003-fix-typo.patch: forward to upstream.
+  * d/control: Bump Standards-Version to 4.1.1:
+    + Move packages from the deprecated section:extra to section:optional.
+  * d/rules:
+    + Use /usr/share/dpkg/architecture.mk instead of calling dpkg-architecture.
+    + Let dh_auto_configure deal with buildflags from the environment, and
+      use dpkg-buildflags to set -Wl,--as-needed.
+    + Move xsltconfig.h to a multi-arch location.  Closes: #834714
+      Thanks to Hugh McMaster <hugh.mcmaster@outlook.com> for the initial patch.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 28 Oct 2017 15:04:16 +0200
+
+libxslt (1.1.29-2.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Build-Depends on rename, fixes FTBFS, thanks Adrian Bunk (Closes: #876601)
+  * Build-Depends on libgcrypt20-dev instead of transitional libgcrypt11-dev,
+    thanks Andreas Metzler (Closes: #864120)
+
+  [ Helmut Grohne ]
+  * Fix FTCBFS: (Closes: #841384)
+    + Drop unsatisfiable binutils dependency: Always satisfied natively even
+      in wheezy.
+    + Use cross-compatible python Build-Depends.
+    + Annotate Build-Depends: perl with :any.
+    + Do not pass CC=cc to configure.
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Fri, 13 Oct 2017 01:03:29 +0200
 
 libxslt (1.1.29-2.1) unstable; urgency=high
 
@@ -128,9 +213,9 @@ libxslt (1.1.26-12) unstable; urgency=low
   * New maintainer (Closes: #654177)
   * debian/rules: small improvements, stop shipping .la files.
   * debian/control: mark libxslt1-dev as not M-A (Closes: #671902).
-  
+
   [ YunQiang Su ]
-  * Convert to 3.0 source format. 
+  * Convert to 3.0 source format.
   * Byte-compile Python modules again (Closes: #671901).
 
  -- Aron Xu <aron@debian.org>  Tue, 29 May 2012 00:31:36 +0800
@@ -138,9 +223,9 @@ libxslt (1.1.26-12) unstable; urgency=low
 libxslt (1.1.26-11) unstable; urgency=low
 
   * QA upload.
-  * Bump standards version to 3.9.3. 
+  * Bump standards version to 3.9.3.
   * Apply Steve Langasek's patch to enable multiarch (closes: #643034).
-  * Fix cve-2011-3970: out-of-bounds array access issue (closes: #660650). 
+  * Fix cve-2011-3970: out-of-bounds array access issue (closes: #660650).
   * Bump debian/compat to 9 and enable hardened build flags (closes: #655601).
   * Eliminate system config.sub and config.guess from the debian diff
     (closes: #670799).
@@ -683,7 +768,7 @@ libxslt (1.1.8-3) unstable; urgency=low
 
 libxslt (1.1.8-2) unstable; urgency=low
 
-  * Add a Build-Depends on python (closes: #260579) 
+  * Add a Build-Depends on python (closes: #260579)
 
  -- Mike Hommey <mh@glandium.org>  Wed, 21 Jul 2004 12:46:05 +0200
 

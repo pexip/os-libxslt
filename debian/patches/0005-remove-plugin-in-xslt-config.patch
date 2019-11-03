@@ -1,0 +1,25 @@
+From: YunQiang Su <syq@debian.org>
+Date: Sun, 29 Oct 2017 01:04:55 +0200
+Subject: remove-plugin-in-xslt-config
+
+Done in Debian upload 1.1.29-1
+---
+ xslt-config.in | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/xslt-config.in b/xslt-config.in
+index 826a0a8..562d715 100644
+--- a/xslt-config.in
++++ b/xslt-config.in
+@@ -65,11 +65,6 @@ while test $# -gt 0; do
+ 	exit 0
+ 	;;
+ 
+-    --plugins)
+-	echo @LIBXSLT_DEFAULT_PLUGINS_PATH@
+-	exit 0
+-	;;
+-
+     --help)
+ 	usage 0
+ 	;;

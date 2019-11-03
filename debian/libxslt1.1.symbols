@@ -24,13 +24,12 @@ libxslt.so.1 libxslt1.1 #MINVER#
  (symver|optional)LIBXML2_1.1.25 1.1.25
  (symver|optional)LIBXML2_1.1.26 1.1.26
  (symver|optional)LIBXML2_1.1.27 1.1.27
- xsltComputingGlobalVarMarker@Base 1.1.25
- xsltCopyTree@Base 1.1.25
- xsltDefaultTrace@Base 1.1.25
+ (symver|optional)LIBXML2_1.1.30 1.1.32
+ xsltDecimalFormatGetByQName@LIBXML2_1.1.30 1.1.32
+ xsltFlagRVTs@LIBXML2_1.1.30 1.1.32
  xsltFreeLocales@LIBXML2_1.1.27 1.1.27
  xsltXPathCompileFlags@LIBXML2_1.1.27 1.1.27
  xsltMaxVars@LIBXML2_1.0.24 1.1.27
- xsltCleanupIds@Base 1.1.28-2.1.0~reproducible1~
 libexslt.so.0 libxslt1.1 #MINVER#
  exsltCommonRegister@Base 1.1.25
  exsltCryptoRegister@Base 1.1.25

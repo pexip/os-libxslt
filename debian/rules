@@ -5,14 +5,12 @@ PYVERS=$(shell pyversions -s)
 # The current default version of python
 PYVER=$(shell pyversions -d)
 
+include /usr/share/dpkg/architecture.mk
+
 export DEB_BUILD_MAINT_OPTIONS=hardening=+all
-DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+export DEB_LDFLAGS_MAINT_APPEND := -Wl,--as-needed
 
-CFLAGS = `dpkg-buildflags --get CFLAGS` -Wall
-LDFLAGS = `dpkg-buildflags --get LDFLAGS` -Wl,--as-needed
-CPPFLAGS = `dpkg-buildflags --get CPPFLAGS`
-
-CONFIGURE_FLAGS := --with-history CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)"           LDFLAGS="$(LDFLAGS)" --cache-file="$(CURDIR)/builddir/config.cache"
+CONFIGURE_FLAGS := --with-history --cache-file="$(CURDIR)/builddir/config.cache"
 
 TARGETS := main $(PYVERS) $(PYVERS:%=%-dbg)
 
@@ -36,7 +34,7 @@ dobuild-%:
 	dh_auto_build --builddirectory=$(BUILD_DIR) -- $(BUILD_FLAGS)
 
 dobuild-python%: BUILD_DIR=builddir/main/$*
-dobuild-python%-dbg: BUILD_FLAGS = PYTHON_INCLUDES=/usr/include/$(*:-dbg=_d) \
+dobuild-python%-dbg doinstall-python%-dbg: BUILD_FLAGS = PYTHON_INCLUDES=/usr/include/$(*:-dbg=_d) \
     LDFLAGS="$(LDFLAGS) -L$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)" CFLAGS="$(CFLAGS) -Wall -O0"
 
 override_dh_auto_clean:
@@ -48,6 +46,13 @@ override_dh_auto_install: $(TARGETS:%=doinstall-%)
 
 doinstall-main:
 	dh_auto_install --builddirectory=builddir/main
+
+	# https://lintian.debian.org/tags/non-empty-dependency_libs-in-la-file.html
+	sed -i "/dependency_libs/ s/'.*'/''/" debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/*.la
+
+	# Move arch-specific headers into /usr/include/<triplet>/libxslt
+	mkdir -pv debian/tmp/usr/include/$(DEB_HOST_MULTIARCH)/libxslt
+	mv -v debian/tmp/usr/include/libxslt/xsltconfig.h debian/tmp/usr/include/$(DEB_HOST_MULTIARCH)/libxslt
 
 	# Properly install documentation in /usr/share/doc/libxslt1-dev
 	install -d debian/tmp/usr/share/doc/libxslt1-dev/EXSLT
@@ -64,10 +69,9 @@ doinstall-main:
 		doc/tutorial2 debian/tmp/usr/share/doc/libxslt1-dev
 	cp -a \
 		doc/EXSLT/html debian/tmp/usr/share/doc/libxslt1-dev/EXSLT
-	sed -i "/dependency_libs/ s/'.*'/''/" debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/*.la
 
 doinstall-python%-dbg:
-	$(MAKE) -C builddir/main/python$*-dbg DESTDIR=$(CURDIR)/debian/tmp-dbg install-pythonLTLIBRARIES
+	$(MAKE) -C builddir/main/python$*-dbg DESTDIR=$(CURDIR)/debian/tmp-dbg install-pythonLTLIBRARIES $(BUILD_FLAGS)
 	prename 's/(?<!_d)\.so$$/_d.so/' debian/tmp-dbg/usr/lib/python$*/*-packages/*.so
 
 doinstall-python%:
@@ -84,7 +88,7 @@ override_dh_install:
 	dh_install -ppython-libxslt1-dbg --sourcedir=debian/tmp-dbg
 
 override_dh_strip:
-	dh_strip -a --dbg-package=libxslt1-dbg -Npython-libxslt1 -Npython-libxslt1-dbg
+	dh_strip -a -Npython-libxslt1 -Npython-libxslt1-dbg
 	dh_strip -ppython-libxslt1 --dbg-package=python-libxslt1-dbg
 	$(foreach python, $(filter-out $(PYVER), $(PYVERS)),\
 		cd $(CURDIR)/debian/python-libxslt1/usr/lib/pyshared; \
