@@ -1,3 +1,20 @@
+libxslt (1.1.29-2.1+deb9u1pexip1) pexip; urgency=low
+
+  * New upstream release
+
+ -- Vincent Sanders <vince@pexip.com>  Fri, 22 Nov 2019 11:21:02 +0000
+
+libxslt (1.1.29-2.1+deb9u1) stretch; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix security framework bypass (CVE-2019-11068) (Closes: #926895, #933743)
+  * Fix uninitialized read of xsl:number token (CVE-2019-13117)
+    (Closes: #931321, #933743)
+  * Fix uninitialized read with UTF-8 grouping chars (CVE-2019-13118)
+    (Closes: #931320, #933743)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 24 Aug 2019 14:04:13 +0200
+
 libxslt (1.1.29-2.1pexip1) unstable; urgency=medium
 
   * Migrate to Stretch
@@ -79,7 +96,7 @@ libxslt (1.1.28-2.1) unstable; urgency=high
 
 libxslt (1.1.28-2+deb8u3pexip2) pexip; urgency=low
 
-  * Backport fixes for CVE-2016-4607, CVE-2016-4609, CVE-2016-4610 
+  * Backport fixes for CVE-2016-4607, CVE-2016-4609, CVE-2016-4610
 
  -- John-Mark Bell <jmb@pexip.com>  Mon, 15 Jan 2018 14:42:07 +0000
 

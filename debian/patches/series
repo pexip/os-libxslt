@@ -6,3 +6,6 @@
 0006-remove-plugin-in-xslt-config.patch
 0007-Fix-heap-overread-in-xsltFormatNumberConversion.patch
 0008-Check-for-integer-overflow-in-xsltAddTextString.patch
+0009-Fix-security-framework-bypass.patch
+0010-Fix-uninitialized-read-of-xsl-number-token.patch
+0011-Fix-uninitialized-read-with-UTF-8-grouping-chars.patch
