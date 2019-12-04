@@ -9,3 +9,4 @@
 0009-Fix-security-framework-bypass.patch
 0010-Fix-uninitialized-read-of-xsl-number-token.patch
 0011-Fix-uninitialized-read-with-UTF-8-grouping-chars.patch
+0012-Fix-dangling-pointer-in-xsltCopyText.patch

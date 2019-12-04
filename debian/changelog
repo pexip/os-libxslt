@@ -1,3 +1,10 @@
+libxslt (1.1.29-2.1+deb9u2) stretch; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix dangling pointer in xsltCopyText (CVE-2019-18197) (Closes: #942646)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Wed, 04 Dec 2019 15:41:16 +0100
+
 libxslt (1.1.29-2.1+deb9u1) stretch; urgency=medium
 
   * Non-maintainer upload.
