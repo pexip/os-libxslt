@@ -19,7 +19,7 @@ Build-Depends:
 Homepage: http://xmlsoft.org/xslt/
 Vcs-Git: https://anonscm.debian.org/git/debian-xml-sgml/libxslt.git
 Vcs-Browser: https://anonscm.debian.org/git/debian-xml-sgml/libxslt.git
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ stretch
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ buster
 
 Package: libxslt1.1
 Section: libs
