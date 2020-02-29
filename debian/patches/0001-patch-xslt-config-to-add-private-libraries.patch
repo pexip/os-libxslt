@@ -3,9 +3,9 @@ Date: Wed, 3 Oct 2012 00:46:34 +0800
 Subject: patch xslt-config to add private libraries
 
 ---
- libexslt.pc.in |    1 +
- libxslt.pc.in  |    1 +
- xslt-config.in |   14 ++++++++++++--
+ libexslt.pc.in |  1 +
+ libxslt.pc.in  |  1 +
+ xslt-config.in | 14 ++++++++++++--
  3 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/libexslt.pc.in b/libexslt.pc.in

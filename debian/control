@@ -6,19 +6,22 @@ XSBC-Pexip-Original-Maintainer: Debian XML/SGML Group <debian-xml-sgml-pkgs@list
 XSBC-Pexip-Original-Uploaders:
  Aron Xu <aron@debian.org>,
  YunQiang Su <syq@debian.org>,
-Standards-Version: 3.9.8
 Build-Depends:
- binutils (>= 2.14.90.0.7),
- debhelper (>= 10),
+ debhelper (>= 11),
  dh-python,
- libgcrypt11-dev,
+ libgcrypt20-dev,
+ libpython-all-dbg,
+ libpython-all-dev (>= 2.6.6-3~),
  libxml2-dev (>= 2.6.27),
- perl,
- python-all-dbg,
- python-all-dev (>= 2.6.6-3~),
+ perl:any,
+ pkg-config,
+ python-all-dev:any (>= 2.6.6-3~),
+ rename,
+Standards-Version: 4.1.4
+Rules-Requires-Root: no
 Homepage: http://xmlsoft.org/xslt/
-Vcs-Git: https://anonscm.debian.org/git/debian-xml-sgml/libxslt.git
-Vcs-Browser: https://anonscm.debian.org/git/debian-xml-sgml/libxslt.git
+Vcs-Browser: https://salsa.debian.org/xml-sgml-team/libxslt
+Vcs-Git: https://salsa.debian.org/xml-sgml-team/libxslt.git
 XS-Pexip-Upstream: http://ftp.debian.org/debian/ buster
 
 Package: libxslt1.1
@@ -57,24 +60,6 @@ Description: XSLT 1.0 processing library - development kit
  .
  This package contains the development files for libxslt.
 
-Package: libxslt1-dbg
-Section: debug
-Priority: extra
-Architecture: any
-Depends:
- libxslt1.1 (= ${binary:Version}),
- ${misc:Depends},
-Multi-Arch: same
-Description: XSLT 1.0 processing library - debugging symbols
- XSLT is an XML language for defining transformations of XML files from
- XML to some other arbitrary format, such as XML, HTML, plain text, etc.
- using standard XSLT stylesheets. libxslt is a C library which
- implements XSLT version 1.0.
- .
- This package provides the debugging symbols for the library and for
- the xsltproc utility provided by the xsltproc package.
- Debugging symbols for the Python modules are not available.
-
 Package: xsltproc
 Architecture: any
 Multi-Arch: foreign
@@ -111,7 +96,6 @@ Description: Python bindings for libxslt1
 Package: python-libxslt1-dbg
 Section: debug
 Architecture: any
-Priority: extra
 Provides:
  ${python:Provides},
 Depends:
