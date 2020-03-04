@@ -1,0 +1,27 @@
+From: Mattia Rizzolo <mattia@debian.org>
+Date: Wed, 4 Mar 2020 13:44:21 +0100
+Subject: use the just-built xsltproc and the packaged stylesheet to rebuild
+ the manpage if needed
+
+Bug-Debian: https://bugs.debian.org/947914
+Forwarded: no
+---
+ doc/Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 3d5364c..119dd9b 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -239,9 +239,9 @@ libxslt-api.xml libxslt-refs.xml EXSLT/libexslt-api.xml \
+ 	($(XSLTPROC) -o ../libxslt/libxslt.syms $(srcdir)/syms.xsl $(srcdir)/symbols.xml)
+ 
+ xsltproc.1: $(srcdir)/xsltproc.xml
+-	-@(if [ -x $(XSLTPROC) ] ; then \
++	(if [ -x $(srcdir)/../xsltproc/xsltproc ] && [ -f /usr/share/xml/docbook/stylesheet/docbook-xsl/manpages/docbook.xsl ] ; then \
+ 	   echo "Rebuilding the man pages from the xml" ; \
+-	   $(XSLTPROC) --nonet $(srcdir)/xsltproc.xml ; fi)
++	   $(srcdir)/../xsltproc/xsltproc --nonet /usr/share/xml/docbook/stylesheet/docbook-xsl/manpages/docbook.xsl $(srcdir)/xsltproc.xml ; fi)
+ 
+ # Note that in the following, xmllint output is piped to xsltproc
+ search.php: $(srcdir)/api.xsl $(srcdir)/site.xsl $(srcdir)/search.templ \

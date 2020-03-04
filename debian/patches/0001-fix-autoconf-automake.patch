@@ -1,0 +1,38 @@
+From: Aron Xu <aron@debian.org>
+Date: Wed, 3 Oct 2012 00:50:32 +0800
+Subject: fix autoconf automake
+
+---
+ configure.ac | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 325a7be..58d4beb 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -87,7 +87,7 @@ AC_SUBST(LIBEXSLT_VERSION_EXTRA)
+ 
+ AM_INIT_AUTOMAKE([foreign])
+ 
+-# AM_MAINTAINER_MODE
++AM_MAINTAINER_MODE
+ 
+ # Support silent build rules, requires at least automake-1.11. Disable
+ # by either passing --disable-silent-rules to configure or passing V=1
+@@ -400,6 +400,7 @@ else
+     WITH_DEBUGGER=1
+     AC_DEFINE([WITH_DEBUGGER],[], [Define if debugging support is enabled])
+ fi
++AM_CONDITIONAL(WITH_DEBUGGER, test "${WITH_DEBUGGER}" = "1")
+ AC_SUBST(WITH_DEBUGGER)
+ 
+ dnl
+@@ -665,7 +666,7 @@ dnl for the spec file
+ RELDATE=`date +'%a %b %e %Y'`
+ AC_SUBST(RELDATE)
+ 
+-rm -f COPYING.LIB COPYING 2>/dev/null && $LN_S $srcdir/Copyright COPYING
++#rm -f COPYING.LIB COPYING 2>/dev/null && $LN_S $srcdir/Copyright COPYING
+ 
+ 
+ AC_CONFIG_FILES([
