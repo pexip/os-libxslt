@@ -1,3 +1,9 @@
+libxslt (1.1.32-2.2~deb10u1pexip2) pexip; urgency=medium
+
+  * Rebuild in buster environment
+
+ -- Steve McIntyre <steve.mcintyre@pexip.com>  Thu, 16 Jul 2020 00:02:14 +0000
+
 libxslt (1.1.32-2.2~deb10u1pexip1) pexip; urgency=medium
 
   * Migrate to Buster
