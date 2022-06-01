@@ -7,17 +7,14 @@ XSBC-Pexip-Original-Uploaders:
  Aron Xu <aron@debian.org>,
  YunQiang Su <syq@debian.org>,
 Build-Depends:
- debhelper (>= 11),
- dh-python,
+ debhelper-compat (= 12),
+ docbook-xsl,
  libgcrypt20-dev,
- libpython-all-dbg,
- libpython-all-dev (>= 2.6.6-3~),
  libxml2-dev (>= 2.6.27),
  perl:any,
  pkg-config,
- python-all-dev:any (>= 2.6.6-3~),
  rename,
-Standards-Version: 4.1.4
+Standards-Version: 4.5.0
 Rules-Requires-Root: no
 Homepage: http://xmlsoft.org/xslt/
 Vcs-Browser: https://salsa.debian.org/xml-sgml-team/libxslt
@@ -73,42 +70,3 @@ Description: XSLT 1.0 command line processor
  .
  This package contains a command line tool that facilitates XSLT
  transformations.
-
-Package: python-libxslt1
-Section: python
-Architecture: any
-Provides:
- ${python:Provides},
-Depends:
- python-libxml2,
- ${misc:Depends},
- ${python:Depends},
- ${shlibs:Depends},
-Description: Python bindings for libxslt1
- XSLT is an XML language for defining transformations of XML files from
- XML to some other arbitrary format, such as XML, HTML, plain text, etc.
- using standard XSLT stylesheets. libxslt is a C library which
- implements XSLT version 1.0.
- .
- This package contains Python bindings for libxslt, needed to use
- libxslt in Python programs.
-
-Package: python-libxslt1-dbg
-Section: debug
-Architecture: any
-Provides:
- ${python:Provides},
-Depends:
- python-dbg,
- python-libxml2-dbg,
- python-libxslt1 (= ${binary:Version}),
- ${misc:Depends},
- ${shlibs:Depends},
-Description: Python bindings for libxslt1 (debug extension)
- XSLT is an XML language for defining transformations of XML files from
- XML to some other arbitrary format, such as XML, HTML, plain text, etc.
- using standard XSLT stylesheets. libxslt is a C library which
- implements XSLT version 1.0.
- .
- This package contains Python bindings for libxslt, needed to use
- libxslt in Python programs for use with the Python debug interpreter.
