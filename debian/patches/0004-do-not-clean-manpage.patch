@@ -9,12 +9,10 @@ Forwarded: no
  doc/Makefile.am | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/doc/Makefile.am b/doc/Makefile.am
-index 3d5364c..119dd9b 100644
 --- a/doc/Makefile.am
 +++ b/doc/Makefile.am
-@@ -239,9 +239,9 @@ libxslt-api.xml libxslt-refs.xml EXSLT/libexslt-api.xml \
- 	($(XSLTPROC) -o ../libxslt/libxslt.syms $(srcdir)/syms.xsl $(srcdir)/symbols.xml)
+@@ -246,9 +246,9 @@
+ 	-@($(XSLTPROC) --nonet -o $@ http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl xsltproc.xml)
  
  xsltproc.1: $(srcdir)/xsltproc.xml
 -	-@(if [ -x $(XSLTPROC) ] ; then \

@@ -15,7 +15,7 @@ Build-Depends:
  rename,
 Standards-Version: 4.5.0
 Rules-Requires-Root: no
-Homepage: http://xmlsoft.org/xslt/
+Homepage: https://gitlab.gnome.org/GNOME/libxslt/-/wikis/home
 Vcs-Browser: https://salsa.debian.org/xml-sgml-team/libxslt
 Vcs-Git: https://salsa.debian.org/xml-sgml-team/libxslt.git
 

@@ -1,3 +1,7 @@
 version=4
-opts="pgpmode=auto" \
-ftp://xmlsoft.org/libxslt/libxslt-([\d\.]+)\.tar\.gz
+
+opts="\
+dversionmangle=auto,\
+uversionmangle=s/(\d)[_\.\-\+]?((RC|rc|pre|dev|BETA|beta|alpha|b|a)[\-\.]?\d*)$/$1~$2/\
+" \
+https://download.gnome.org/sources/libxslt/(\d[\d\.]+)/ @PACKAGE@@ANY_VERSION@@ARCHIVE_EXT@

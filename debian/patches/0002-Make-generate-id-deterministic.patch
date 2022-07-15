@@ -12,15 +12,12 @@ Bug-Debian: https://bugs.debian.org/823857
  libxslt/xsltInternals.h |  2 ++
  4 files changed, 107 insertions(+), 1 deletion(-)
 
-diff --git a/libxslt/functions.c b/libxslt/functions.c
-index b350545..858a483 100644
 --- a/libxslt/functions.c
 +++ b/libxslt/functions.c
-@@ -671,6 +671,63 @@ xsltFormatNumberFunction(xmlXPathParserContextPtr ctxt, int nargs)
-     xmlXPathFreeObject(decimalObj);
+@@ -684,6 +684,63 @@
  }
  
-+/**
+ /**
 + * xsltCleanupIds:
 + * @ctxt: the transformation context
 + * @root: the root of the resulting document
@@ -77,10 +74,11 @@ index b350545..858a483 100644
 +    return(count);
 +}
 +
- /**
++/**
   * xsltGenerateIdFunction:
   * @ctxt:  the XPath Parser context
-@@ -722,7 +779,39 @@ xsltGenerateIdFunction(xmlXPathParserContextPtr ctxt, int nargs){
+  * @nargs:  the number of arguments
+@@ -734,7 +791,39 @@
      if (obj)
          xmlXPathFreeObject(obj);
  
@@ -121,29 +119,25 @@ index b350545..858a483 100644
      if (val >= 0) {
        snprintf((char *)str, sizeof(str), "idp%ld", val);
      } else {
-diff --git a/libxslt/functions.h b/libxslt/functions.h
-index 5455b7f..3116361 100644
 --- a/libxslt/functions.h
 +++ b/libxslt/functions.h
-@@ -63,6 +63,13 @@ XSLTPUBFUN void XSLTCALL
- 	xsltFunctionAvailableFunction	(xmlXPathParserContextPtr ctxt,
+@@ -64,6 +64,13 @@
  					 int nargs);
  
-+/*
+ /*
 + * Cleanup for ID generation
 + */
 +XSLTPUBFUN int XSLTCALL
 +	xsltCleanupIds			(xsltTransformContextPtr ctxt,
 +					 xmlNodePtr root);
 +
- /*
++/*
   * And the registration
   */
-diff --git a/libxslt/transform.c b/libxslt/transform.c
-index d1c4793..3d1ee05 100644
+ 
 --- a/libxslt/transform.c
 +++ b/libxslt/transform.c
-@@ -706,6 +706,7 @@ xsltNewTransformContext(xsltStylesheetPtr style, xmlDocPtr doc) {
+@@ -706,6 +706,7 @@
      cur->traceCode = (unsigned long*) &xsltDefaultTrace;
      cur->xinclude = xsltGetXIncludeDefault();
      cur->keyInitLevel = 0;
@@ -151,7 +145,7 @@ index d1c4793..3d1ee05 100644
  
      return(cur);
  
-@@ -6140,6 +6141,13 @@ xsltApplyStylesheetInternal(xsltStylesheetPtr style, xmlDocPtr doc,
+@@ -6038,6 +6039,13 @@
      if (root != NULL) {
          const xmlChar *doctype = NULL;
  
@@ -165,11 +159,9 @@ index d1c4793..3d1ee05 100644
          if ((root->ns != NULL) && (root->ns->prefix != NULL))
  	    doctype = xmlDictQLookup(ctxt->dict, root->ns->prefix, root->name);
  	if (doctype == NULL)
-diff --git a/libxslt/xsltInternals.h b/libxslt/xsltInternals.h
-index 14a971a..a7d71b5 100644
 --- a/libxslt/xsltInternals.h
 +++ b/libxslt/xsltInternals.h
-@@ -1782,6 +1782,8 @@ struct _xsltTransformContext {
+@@ -1786,6 +1786,8 @@
      int maxTemplateVars;
      unsigned long opLimit;
      unsigned long opCount;

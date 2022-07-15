@@ -6,11 +6,9 @@ Subject: fix autoconf automake
  configure.ac | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/configure.ac b/configure.ac
-index 325a7be..58d4beb 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -87,7 +87,7 @@ AC_SUBST(LIBEXSLT_VERSION_EXTRA)
+@@ -87,7 +87,7 @@
  
  AM_INIT_AUTOMAKE([foreign])
  
@@ -19,7 +17,7 @@ index 325a7be..58d4beb 100644
  
  # Support silent build rules, requires at least automake-1.11. Disable
  # by either passing --disable-silent-rules to configure or passing V=1
-@@ -400,6 +400,7 @@ else
+@@ -441,6 +441,7 @@
      WITH_DEBUGGER=1
      AC_DEFINE([WITH_DEBUGGER],[], [Define if debugging support is enabled])
  fi
@@ -27,7 +25,7 @@ index 325a7be..58d4beb 100644
  AC_SUBST(WITH_DEBUGGER)
  
  dnl
-@@ -665,7 +666,7 @@ dnl for the spec file
+@@ -707,7 +708,7 @@
  RELDATE=`date +'%a %b %e %Y'`
  AC_SUBST(RELDATE)
  
