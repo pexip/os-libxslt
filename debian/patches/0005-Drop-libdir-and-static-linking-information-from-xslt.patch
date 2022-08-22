@@ -1,0 +1,51 @@
+From: Mattia Rizzolo <mattia@debian.org>
+Date: Wed, 4 Mar 2020 13:46:33 +0100
+Subject: Drop libdir and static linking information from xslt-config
+
+See https://bugs.debian.org/952115 for the static linking details.
+
+Bug-Debian: https://bugs.debian.org/952768
+---
+ xslt-config.in | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
+
+diff --git a/xslt-config.in b/xslt-config.in
+index 6abec9f..ada0cc6 100644
+--- a/xslt-config.in
++++ b/xslt-config.in
+@@ -4,7 +4,6 @@ prefix=@prefix@
+ exec_prefix=@exec_prefix@
+ exec_prefix_set=no
+ includedir=@includedir@
+-libdir=@libdir@
+ 
+ usage()
+ {
+@@ -15,8 +14,7 @@ Known values for OPTION are:
+ 
+   --prefix=DIR		change XSLT prefix [default $prefix]
+   --exec-prefix=DIR	change XSLT executable prefix [default $exec_prefix]
+-  --libs		print library linking information
+-                        add --dynamic to print only shared libraries
++  --libs		print library dynamic linking information
+   --cflags		print pre-processor and compiler flags
+   --plugins		print plugin directory
+   --help		display this help and exit
+@@ -76,16 +74,7 @@ while test $# -gt 0; do
+        	;;
+ 
+     --libs)
+-        if [ "$2" = "--dynamic" ]; then
+-            shift
+-            libs="@XSLT_LIBS@"
+-        else
+-            libs="@XSLT_LIBS@ @XSLT_PRIVATE_LIBS@"
+-        fi
+-
+-        if [ "@XSLT_LIBDIR@" != "-L/usr/lib" -a "@XSLT_LIBDIR@" != "-L/usr/lib64" ]; then
+-            libs="@XSLT_LIBDIR@ $libs"
+-        fi
++        libs="@XSLT_LIBS@"
+ 
+         libs="$libs @EXTRA_LIBS@"
+        	;;

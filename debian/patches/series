@@ -1,11 +1,6 @@
-0001-patch-xslt-config-to-add-private-libraries.patch
-0002-fix-autoconf-automake.patch
-0003-fix-typo.patch
-0004-Make-generate-id-deterministic.patch
-0005-remove-plugin-in-xslt-config.patch
-0006-Fix-security-framework-bypass.patch
-0007-Fix-uninitialized-read-of-xsl-number-token.patch
-0008-Fix-uninitialized-read-with-UTF-8-grouping-chars.patch
-0009-Fix-dangling-pointer-in-xsltCopyText.patch
-0010-Always-set-context-node-before-calling.patch
-0011-Fix-use-after-free-in-xsltApplyTemplates.patch
+0001-fix-autoconf-automake.patch
+0002-Make-generate-id-deterministic.patch
+0003-remove-plugin-in-xslt-config.patch
+0004-do-not-clean-manpage.patch
+0005-Drop-libdir-and-static-linking-information-from-xslt.patch
+0006-Fix-use-after-free-in-xsltApplyTemplates.patch

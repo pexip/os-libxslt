@@ -1,16 +1,55 @@
-libxslt (1.1.32-2.2~deb10u2) buster-security; urgency=medium
+libxslt (1.1.34-4+deb11u1) bullseye-security; urgency=high
 
-  * Non-maintainer upload by the LTS Team.
-  * CVE-2019-5815: heap corruption in xsltNumberFormatGetMultipleLevel.
-  * CVE-2021-30560: use-after-free in xsltApplyTemplates.
+  * Non-maintainer upload by the Security Team.
+  * Fix use-after-free in xsltApplyTemplates (CVE-2021-30560)
 
- -- Emilio Pozuelo Monfort <pochu@debian.org>  Fri, 09 Sep 2022 12:30:48 +0200
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 22 Aug 2022 21:15:10 +0200
 
-libxslt (1.1.32-2.2~deb10u1) buster; urgency=medium
+libxslt (1.1.34-4) unstable; urgency=medium
 
-  * Rebuild for buster 
+  * Team upload.
+  * Add patch to make the xslt-config script compatible with multi-arch.
+    Closes: #952768
 
- -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 03 Nov 2019 17:11:47 +0100
+ -- Mattia Rizzolo <mattia@debian.org>  Wed, 04 Mar 2020 14:02:32 +0100
+
+libxslt (1.1.34-3) unstable; urgency=medium
+
+  * Team upload.
+  * Add a patch to fix FTBFS when built twice in a row.  Closes: #947914
+    (Add build-dependency on docbook-xsl for this.)
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 22 Feb 2020 15:28:46 +0100
+
+libxslt (1.1.34-2) unstable; urgency=medium
+
+  * Team upload.
+  * Re-add the xslt-config script for now.
+  * d/control: Bump Standards-Version to 4.5.0, no changes needed.
+  * Upload to unstable.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 21 Feb 2020 14:24:17 +0100
+
+libxslt (1.1.34-1) experimental; urgency=medium
+
+  * Team upload.
+  * New upstream version 1.1.34.
+  * Refresh patches
+  * d/libxslt1.1.symbols: Add new symbols.
+  * d/control:
+    + Bump debhelper compat level to 12.
+    + Bump Standards-Version to 4.4.1, no changes needed.
+  * Stop building and installing the static library.
+  * Stop installing xslt-config, please use pkg-config.
+  * Drop Python2 packages.  Closes: #936942
+  * Make use of dh_missing --fail-missing:
+    + Leave the docs files where the upstream build system put them, and just
+      move them into the right package.  All the documentation was this way
+      moved into an extra html/ directory.
+    + Installs files in a way that lets dh_missing detect them as installed.
+     + d/not-installed: list xslt-config.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Mon, 25 Nov 2019 19:22:08 +0100
 
 libxslt (1.1.32-2.2) unstable; urgency=medium
 
