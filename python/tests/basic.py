@@ -27,4 +27,3 @@ if libxml2.debugMemory(1) == 0:
 else:
     print "Memory leak %d bytes" % (libxml2.debugMemory(1))
     libxml2.dumpMemory()
-    sys.exit(255)

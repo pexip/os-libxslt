@@ -23,29 +23,8 @@
 #include <stdio.h>
 #include <stddef.h>
 
-#ifdef _MSC_VER
-
-/* snprintf emulation taken from http://stackoverflow.com/a/8712996/1956010 */
-#if _MSC_VER < 1900
-
-#include <stdarg.h>
-
-#define vsnprintf c99_vsnprintf
-
-__inline int c99_vsnprintf(char *outBuf, size_t size, const char *format, va_list ap)
-{
-    int count = -1;
-
-    if (size != 0)
-        count = _vsnprintf_s(outBuf, size, _TRUNCATE, format, ap);
-    if (count == -1)
-        count = _vscprintf(format, ap);
-
-    return count;
-}
-
-#endif /* _MSC_VER < 1900 */
-
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(vsnprintf)
+#define vsnprintf(b,c,f,a) _vsnprintf(b,c,f,a)
 #elif defined(XSLT_NEED_TRIO)
 #include "trio.h"
 #define vsnprintf trio_vsnprintf
@@ -201,7 +180,7 @@ static xmlHashTablePtr libxslt_extModuleElements = NULL;
 static xmlHashTablePtr libxslt_extModuleElementPreComp = NULL;
 
 static void
-deallocateCallback(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
+deallocateCallback(void *payload, xmlChar *name ATTRIBUTE_UNUSED) {
     PyObject *function = (PyObject *) payload;
 
 #ifdef DEBUG_EXTENSIONS
@@ -212,7 +191,7 @@ deallocateCallback(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
 }
 
 static void
-deallocateClasse(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
+deallocateClasse(void *payload, xmlChar *name ATTRIBUTE_UNUSED) {
     PyObject *class = (PyObject *) payload;
 
 #ifdef DEBUG_EXTENSIONS
@@ -1148,10 +1127,10 @@ libxslt_xsltRegisterExtensionClass(PyObject *self ATTRIBUTE_UNUSED,
     Py_XINCREF(pyobj_c);
 
     ret = xsltRegisterExtModuleFull(ns_uri,
-       libxslt_xsltPythonExtModuleCtxtInit,
-       libxslt_xsltPythonExtModuleCtxtShutdown,
-       libxslt_xsltPythonExtModuleStyleInit,
-       libxslt_xsltPythonExtModuleStyleShutdown);
+       (xsltExtInitFunction) libxslt_xsltPythonExtModuleCtxtInit,
+       (xsltExtShutdownFunction) libxslt_xsltPythonExtModuleCtxtShutdown,
+       (xsltStyleExtInitFunction) libxslt_xsltPythonExtModuleStyleInit,
+       (xsltStyleExtShutdownFunction) libxslt_xsltPythonExtModuleStyleShutdown);
     py_retval = libxml_intWrap((int) ret);
     if (ret < 0) {
 	Py_XDECREF(pyobj_c);

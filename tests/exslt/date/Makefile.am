@@ -38,7 +38,7 @@ CLEANFILES = .memdump
 
 test-current:
 	@(echo > .memdump)
-	@(if [ -z "$$CI" ]; then \
+	@(if [ -z "$$CONTINUOUS_INTEGRATION" ]; then \
 	    echo \<doc/\> >current.xml ; \
 	    echo "#" ; \
 	    echo "# Inspect the following for correctness" ; \

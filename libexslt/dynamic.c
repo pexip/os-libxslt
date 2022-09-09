@@ -127,15 +127,7 @@ exsltDynMapFunction(xmlXPathParserContextPtr ctxt, int nargs)
         goto cleanup;
     }
 
-    tctxt = xsltXPathGetTransformContext(ctxt);
-    if (tctxt == NULL) {
-	xsltTransformError(xsltXPathGetTransformContext(ctxt), NULL, NULL,
-	      "dyn:map : internal error tctxt == NULL\n");
-	goto cleanup;
-    }
-
-    if (str == NULL || !xmlStrlen(str) ||
-        !(comp = xmlXPathCtxtCompile(tctxt->xpathCtxt, str)))
+    if (str == NULL || !xmlStrlen(str) || !(comp = xmlXPathCompile(str)))
         goto cleanup;
 
     oldDoc = ctxt->context->doc;
@@ -147,6 +139,12 @@ exsltDynMapFunction(xmlXPathParserContextPtr ctxt, int nargs)
 	 * since we really don't know we're going to be adding node(s)
 	 * down the road we create the RVT regardless
 	 */
+    tctxt = xsltXPathGetTransformContext(ctxt);
+    if (tctxt == NULL) {
+	xsltTransformError(xsltXPathGetTransformContext(ctxt), NULL, NULL,
+	      "dyn:map : internal error tctxt == NULL\n");
+	goto cleanup;
+    }
     container = xsltCreateRVT(tctxt);
     if (container == NULL) {
 	xsltTransformError(tctxt, NULL, NULL,
@@ -196,10 +194,10 @@ exsltDynMapFunction(xmlXPathParserContextPtr ctxt, int nargs)
                     case XPATH_BOOLEAN:
                         if (container != NULL) {
                             xmlNodePtr cur =
-                                xmlNewTextChild((xmlNodePtr) container, NULL,
-                                                BAD_CAST "boolean",
-                                                BAD_CAST (subResult->
-                                                boolval ? "true" : ""));
+                                xmlNewChild((xmlNodePtr) container, NULL,
+                                            BAD_CAST "boolean",
+                                            BAD_CAST (subResult->
+                                            boolval ? "true" : ""));
                             if (cur != NULL) {
                                 cur->ns =
                                     xmlNewNs(cur,
@@ -217,8 +215,8 @@ exsltDynMapFunction(xmlXPathParserContextPtr ctxt, int nargs)
                                 xmlXPathCastNumberToString(subResult->
                                                            floatval);
                             xmlNodePtr cur =
-                                xmlNewTextChild((xmlNodePtr) container, NULL,
-                                                BAD_CAST "number", val);
+                                xmlNewChild((xmlNodePtr) container, NULL,
+                                            BAD_CAST "number", val);
                             if (val != NULL)
                                 xmlFree(val);
 
@@ -236,9 +234,9 @@ exsltDynMapFunction(xmlXPathParserContextPtr ctxt, int nargs)
                     case XPATH_STRING:
                         if (container != NULL) {
                             xmlNodePtr cur =
-                                xmlNewTextChild((xmlNodePtr) container, NULL,
-                                                BAD_CAST "string",
-                                                subResult->stringval);
+                                xmlNewChild((xmlNodePtr) container, NULL,
+                                            BAD_CAST "string",
+                                            subResult->stringval);
                             if (cur != NULL) {
                                 cur->ns =
                                     xmlNewNs(cur,

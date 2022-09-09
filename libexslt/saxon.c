@@ -29,16 +29,10 @@
  *
  * Returns the data for this transformation
  */
-static void *
+static xmlHashTablePtr
 exsltSaxonInit (xsltTransformContextPtr ctxt ATTRIBUTE_UNUSED,
 		const xmlChar *URI ATTRIBUTE_UNUSED) {
     return xmlHashCreate(1);
-}
-
-static void
-exsltSaxonFreeCompExprEntry(void *payload,
-                            const xmlChar *name ATTRIBUTE_UNUSED) {
-    xmlXPathFreeCompExpr((xmlXPathCompExprPtr) payload);
 }
 
 /**
@@ -52,9 +46,8 @@ exsltSaxonFreeCompExprEntry(void *payload,
 static void
 exsltSaxonShutdown (xsltTransformContextPtr ctxt ATTRIBUTE_UNUSED,
 		    const xmlChar *URI ATTRIBUTE_UNUSED,
-		    void *vdata) {
-    xmlHashTablePtr data = (xmlHashTablePtr) vdata;
-    xmlHashFree(data, exsltSaxonFreeCompExprEntry);
+		    xmlHashTablePtr data) {
+    xmlHashFree(data, (xmlHashDeallocator) xmlXPathFreeCompExpr);
 }
 
 
@@ -105,7 +98,7 @@ exsltSaxonExpressionFunction (xmlXPathParserContextPtr ctxt, int nargs) {
     ret = xmlHashLookup(hash, arg);
 
     if (ret == NULL) {
-	 ret = xmlXPathCtxtCompile(tctxt->xpathCtxt, arg);
+	 ret = xmlXPathCompile(arg);
 	 if (ret == NULL) {
 	      xmlFree(arg);
               xmlXPathSetError(ctxt, XPATH_EXPR_ERROR);
@@ -300,8 +293,8 @@ exsltSaxonLineNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 void
 exsltSaxonRegister (void) {
      xsltRegisterExtModule (SAXON_NAMESPACE,
-			    exsltSaxonInit,
-			    exsltSaxonShutdown);
+			    (xsltExtInitFunction) exsltSaxonInit,
+			    (xsltExtShutdownFunction) exsltSaxonShutdown);
      xsltRegisterExtModuleFunction((const xmlChar *) "expression",
 				   SAXON_NAMESPACE,
 				   exsltSaxonExpressionFunction);

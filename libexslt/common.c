@@ -126,6 +126,6 @@ exsltCommonRegister (void) {
 				  exsltObjectTypeFunction);
     xsltRegisterExtModuleElement((const xmlChar *) "document",
 				 EXSLT_COMMON_NAMESPACE,
-				 xsltDocumentComp,
-				 xsltDocumentElem);
+				 (xsltPreComputeFunction) xsltDocumentComp,
+				 (xsltTransformFunction) xsltDocumentElem);
 }

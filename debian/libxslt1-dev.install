@@ -1,9 +1,10 @@
 usr/bin/xslt-config
 usr/include
+usr/lib/*/libexslt.a
 usr/lib/*/libexslt.so
+usr/lib/*/libxslt.a
 usr/lib/*/libxslt.so
 usr/lib/*/pkgconfig
 usr/lib/*/xsltConf.sh
 usr/share/aclocal
-usr/share/man/man3/libexslt.3
-usr/share/man/man3/libxslt.3
+usr/share/doc/libxslt1-dev

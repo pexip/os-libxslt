@@ -44,7 +44,6 @@ xsltChoose
 xsltCleanupGlobals
 xsltCleanupTemplates
 xsltComment
-xsltCompMatchClearCache
 xsltCompileAttr
 xsltCompilePattern
 xsltComputeSortResult
@@ -177,7 +176,6 @@ xsltParseStylesheetInclude
 xsltParseStylesheetOutput
 xsltParseStylesheetParam
 xsltParseStylesheetProcess
-xsltParseStylesheetUser
 xsltParseStylesheetVariable
 xsltParseTemplateContent
 xsltPointerListAddSize

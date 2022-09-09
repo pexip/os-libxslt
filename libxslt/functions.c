@@ -55,7 +55,7 @@
 
 /**
  * xsltXPathFunctionLookup:
- * @vctxt:  a void * but the XSLT transformation context actually
+ * @ctxt:  a void * but the XSLT transformation context actually
  * @name:  the function name
  * @ns_uri:  the function namespace URI
  *
@@ -65,9 +65,8 @@
  * Returns the callback function or NULL if not found
  */
 xmlXPathFunction
-xsltXPathFunctionLookup (void *vctxt,
+xsltXPathFunctionLookup (xmlXPathContextPtr ctxt,
 			 const xmlChar *name, const xmlChar *ns_uri) {
-    xmlXPathContextPtr ctxt = (xmlXPathContextPtr) vctxt;
     xmlXPathFunction ret;
 
     if ((ctxt == NULL) || (name == NULL) || (ns_uri == NULL))
