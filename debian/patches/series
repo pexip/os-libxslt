@@ -7,3 +7,5 @@
 0007-Fix-uninitialized-read-of-xsl-number-token.patch
 0008-Fix-uninitialized-read-with-UTF-8-grouping-chars.patch
 0009-Fix-dangling-pointer-in-xsltCopyText.patch
+0010-Always-set-context-node-before-calling.patch
+0011-Fix-use-after-free-in-xsltApplyTemplates.patch

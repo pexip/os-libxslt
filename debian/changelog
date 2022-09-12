@@ -1,3 +1,17 @@
+libxslt (1.1.32-2.2~deb10u2pexip1) pexip; urgency=medium
+
+  * New upstream release with security updates
+
+ -- Steve McIntyre <steve.mcintyre@pexip.com>  Mon, 12 Sep 2022 14:44:21 +0100
+
+libxslt (1.1.32-2.2~deb10u2) buster-security; urgency=medium
+
+  * Non-maintainer upload by the LTS Team.
+  * CVE-2019-5815: heap corruption in xsltNumberFormatGetMultipleLevel.
+  * CVE-2021-30560: use-after-free in xsltApplyTemplates.
+
+ -- Emilio Pozuelo Monfort <pochu@debian.org>  Fri, 09 Sep 2022 12:30:48 +0200
+
 libxslt (1.1.32-2.2~deb10u1pexip2) pexip; urgency=medium
 
   * Rebuild in buster environment
