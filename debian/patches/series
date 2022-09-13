@@ -3,3 +3,4 @@
 0003-remove-plugin-in-xslt-config.patch
 0004-do-not-clean-manpage.patch
 0005-Drop-libdir-and-static-linking-information-from-xslt.patch
+0006-Fix-use-after-free-in-xsltApplyTemplates.patch
