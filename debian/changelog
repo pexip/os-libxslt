@@ -1,15 +1,21 @@
+libxslt (1.1.35-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version 1.1.35.
+  * Refresh patches.
+  * Update Homepage and d/watch to point to the new GNOME-based home
+  * d/*.doc-base: rename the document name, it shouldn't match the binary
+    package name.
+  * Install the new gtk-doc documentation.
+  * Do not install the .cmake file that come with the new version.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 15 Jul 2022 15:29:07 +0200
+
 libxslt (1.1.34-4+deb11u1pexip1) pexip-bullseye; urgency=medium
 
   * New upstream release.
 
  -- Mark Hymers <mark.hymers@pexip.com>  Tue, 13 Sep 2022 13:13:26 +0100
-
-libxslt (1.1.34-4+deb11u1) bullseye-security; urgency=high
-
-  * Non-maintainer upload by the Security Team.
-  * Fix use-after-free in xsltApplyTemplates (CVE-2021-30560)
-
- -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 22 Aug 2022 21:15:10 +0200
 
 libxslt (1.1.34-4pexip3) pexip-bullseye; urgency=medium
 
