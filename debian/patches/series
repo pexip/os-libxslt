@@ -3,5 +3,7 @@
 0003-remove-plugin-in-xslt-config.patch
 0004-do-not-clean-manpage.patch
 0005-Drop-libdir-and-static-linking-information-from-xslt.patch
+0010_missing_include.diff
+0011_libgcrypt_pkgconfig.diff
 0012-CVE-2024-55549-Fix-UAF-related-to-excluded-namespace.patch
 0013-CVE-2025-24855-Fix-use-after-free-of-XPath-context-n.patch
