@@ -1,0 +1,34 @@
+Description: Add missing #include <stdlib.h> to fix FTFBS.
+Author: Andreas Metzler <ametzler@debian.org>
+Bug-Debian: https://bugs.debian.org/1073312
+Applied-Upstream: 1.39, https://gitlab.gnome.org/GNOME/libxslt/-/commit/b7f824f613a0da3e6cefc5dc558ff597eb6545b4
+Last-Update: 2024-07-09
+
+--- a/libxslt/extensions.c
++++ b/libxslt/extensions.c
+@@ -10,10 +10,11 @@
+  */
+ 
+ #define IN_LIBXSLT
+ #include "libxslt.h"
+ 
++#include <stdlib.h>
+ #include <string.h>
+ #include <limits.h>
+ 
+ #include <libxml/xmlmemory.h>
+ #include <libxml/tree.h>
+--- a/libexslt/date.c
++++ b/libexslt/date.c
+@@ -36,10 +36,11 @@
+ #include <libxslt/xsltInternals.h>
+ #include <libxslt/extensions.h>
+ 
+ #include "exslt.h"
+ 
++#include <stdlib.h>
+ #include <string.h>
+ #include <limits.h>
+ 
+ #ifdef HAVE_ERRNO_H
+ #include <errno.h>

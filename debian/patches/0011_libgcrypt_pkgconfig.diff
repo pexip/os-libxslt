@@ -1,0 +1,42 @@
+Description: Use pkg-config to locate libgcrypt.
+Author: Andreas Metzler <ametzler@debian.org>
+Bug-Debian: https://bugs.debian.org/1071937
+Last-Update: 2024-07-09
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -368,31 +368,16 @@ case $host in
+     dnl crypto libraries
+     WITH_CRYPTO=1
+     CRYPTO_TESTDIR=crypto
+     ;;
+   *)
+-    AC_PATH_TOOL(LIBGCRYPT_CONFIG, libgcrypt-config, no)
+-    if test "$LIBGCRYPT_CONFIG" != "no" ; then
+-      LIBGCRYPT_VERSION=`$LIBGCRYPT_CONFIG --version`
+-      if test VERSION_TO_NUMBER(echo $LIBGCRYPT_VERSION) -lt VERSION_TO_NUMBER(echo "1.1.42")
+-      then
+-        LIBGCRYPT_CFLAGS=""
+-        LIBGCRYPT_LIBS=""
+-        echo 'gcrypt library version < 1.1.42 - Crypto extensions will not be available.'
+-      else
+-        LIBGCRYPT_CFLAGS=`$LIBGCRYPT_CONFIG $libgcrypt_config_args --cflags`
+-        LIBGCRYPT_LIBS=`$LIBGCRYPT_CONFIG $libgcrypt_config_args --libs`
++    PKG_CHECK_MODULES(LIBGCRYPT, [libgcrypt >= 1.1.41],
+         AC_DEFINE(HAVE_GCRYPT, 1, [Define if gcrypt library is available.])
+         echo 'Crypto extensions will be available.'
+         WITH_CRYPTO=1
+-        CRYPTO_TESTDIR=crypto
+-      fi
+-    else
+-      LIBGCRYPT_CFLAGS=""
+-      LIBGCRYPT_LIBS=""
+-      echo 'Crypto extensions will not be available. Install libgcrypt and reconfigure to make available.'
+-    fi
++        CRYPTO_TESTDIR=crypto,
++      echo 'Crypto extensions will not be available. Install libgcrypt >=1.1.41 and reconfigure to make available.')
+ esac
+ fi
+ AC_SUBST(WITH_CRYPTO)
+ AC_SUBST(CRYPTO_TESTDIR)
+ AC_SUBST(LIBGCRYPT_CFLAGS)
