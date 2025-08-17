@@ -1,0 +1,61 @@
+From c45ed81aeb50a7fb6799a166270d6ccc9ffa63b2 Mon Sep 17 00:00:00 2001
+From: Nick Wellnhofer <wellnhofer@aevum.de>
+Date: Thu, 19 Sep 2024 21:49:46 +0200
+Subject: [PATCH] variables: Fix non-deterministic generated IDs
+
+Evaluate global variables in deterministic order. Otherwise, generated
+IDs could be non-deterministic if generate-id() is called.
+
+Fixes #123.
+---
+ libxslt/variables.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
+
+Index: libxslt-1.1.35/libxslt/variables.c
+===================================================================
+--- libxslt-1.1.35.orig/libxslt/variables.c
++++ libxslt-1.1.35/libxslt/variables.c
+@@ -1258,13 +1258,6 @@ error:
+     return(result);
+ }
+ 
+-static void
+-xsltEvalGlobalVariableWrapper(void *payload, void *data,
+-                              const xmlChar *name ATTRIBUTE_UNUSED) {
+-    xsltEvalGlobalVariable((xsltStackElemPtr) payload,
+-                           (xsltTransformContextPtr) data);
+-}
+-
+ /**
+  * xsltEvalGlobalVariables:
+  * @ctxt:  the XSLT transformation context
+@@ -1277,6 +1270,7 @@ xsltEvalGlobalVariableWrapper(void *payl
+ int
+ xsltEvalGlobalVariables(xsltTransformContextPtr ctxt) {
+     xsltStackElemPtr elem;
++    xsltStackElemPtr head = NULL;
+     xsltStylesheetPtr style;
+ 
+     if ((ctxt == NULL) || (ctxt->document == NULL))
+@@ -1337,9 +1331,19 @@ xsltEvalGlobalVariables(xsltTransformCon
+     }
+ 
+     /*
+-     * This part does the actual evaluation
++     * This part does the actual evaluation. Note that scanning the hash
++     * table would result in a non-deterministic order, leading to
++     * non-deterministic generated IDs.
+      */
+-    xmlHashScan(ctxt->globalVars, xsltEvalGlobalVariableWrapper, ctxt);
++    elem = head;
++    while (elem != NULL) {
++        xsltStackElemPtr next;
++
++        xsltEvalGlobalVariable(elem, ctxt);
++        next = elem->next;
++        elem->next = NULL;
++        elem = next;
++    }
+ 
+     return(0);
+ }

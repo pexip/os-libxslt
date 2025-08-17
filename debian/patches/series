@@ -1,7 +1,15 @@
 0001-fix-autoconf-automake.patch
-0002-Make-generate-id-deterministic.patch
+#0002-Make-generate-id-deterministic.patch
 0003-remove-plugin-in-xslt-config.patch
 0004-do-not-clean-manpage.patch
 0005-Drop-libdir-and-static-linking-information-from-xslt.patch
 0012-CVE-2024-55549-Fix-UAF-related-to-excluded-namespace.patch
 0013-CVE-2025-24855-Fix-use-after-free-of-XPath-context-n.patch
+0014-Don-t-declare-disabled-functions.patch
+0015-Infrastructure-to-store-extra-data-in-source-nodes.patch
+0016-Store-key-status-of-source-nodes-as-bit-flag.patch
+0017-Make-generate-id-deterministic.patch
+0018-malloc-fail-Fix-memory-leak-in-xsltEvalGlobalVariabl.patch
+0019-variables-Fix-non-deterministic-generated-IDs.patch
+0020-Clean-up-attributes-in-source-doc.patch
+gnome-libxslt-bug-139-apple-fix.diff
