@@ -1,0 +1,54 @@
+From ed11eaa904a63397ed289dad7485947483cbb523 Mon Sep 17 00:00:00 2001
+From: Nick Wellnhofer <wellnhofer@aevum.de>
+Date: Tue, 30 Aug 2022 03:27:21 +0200
+Subject: [PATCH] Don't declare disabled functions
+
+---
+ libxslt/xsltutils.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/libxslt/xsltutils.h b/libxslt/xsltutils.h
+index 12e4c75f..7a12f7b3 100644
+--- a/libxslt/xsltutils.h
++++ b/libxslt/xsltutils.h
+@@ -244,6 +244,7 @@ XSLTPUBFUN xmlXPathCompExprPtr XSLTCALL
+ 						 const xmlChar *str,
+ 						 int flags);
+ 
++#ifdef WITH_PROFILER
+ /*
+  * Profiling.
+  */
+@@ -257,6 +258,7 @@ XSLTPUBFUN long XSLTCALL
+ 		xsltTimestamp			(void);
+ XSLTPUBFUN void XSLTCALL
+ 		xsltCalibrateAdjust		(long delta);
++#endif
+ 
+ /**
+  * XSLT_TIMESTAMP_TICS_PER_SEC:
+@@ -289,10 +291,11 @@ typedef void (*xsltHandleDebuggerCallback) (xmlNodePtr cur, xmlNodePtr node,
+ typedef int (*xsltAddCallCallback) (xsltTemplatePtr templ, xmlNodePtr source);
+ typedef void (*xsltDropCallCallback) (void);
+ 
+-XSLTPUBFUN void XSLTCALL
+-		xsltSetDebuggerStatus		(int value);
+ XSLTPUBFUN int XSLTCALL
+ 		xsltGetDebuggerStatus		(void);
++#ifdef WITH_DEBUGGER
++XSLTPUBFUN void XSLTCALL
++		xsltSetDebuggerStatus		(int value);
+ XSLTPUBFUN int XSLTCALL
+ 		xsltSetDebuggerCallbacks	(int no, void *block);
+ XSLTPUBFUN int XSLTCALL
+@@ -300,6 +303,7 @@ XSLTPUBFUN int XSLTCALL
+ 						 xmlNodePtr source);
+ XSLTPUBFUN void XSLTCALL
+ 		xslDropCall			(void);
++#endif
+ 
+ #ifdef __cplusplus
+ }
+-- 
+2.47.2
+

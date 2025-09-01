@@ -1,0 +1,33 @@
+From 8e9c5d0551ab98f7f3235e9a37ef062ab76d4917 Mon Sep 17 00:00:00 2001
+From: Nick Wellnhofer <wellnhofer@aevum.de>
+Date: Sun, 26 Feb 2023 16:53:44 +0100
+Subject: [PATCH] malloc-fail: Fix memory leak in xsltEvalGlobalVariables
+
+Found with libFuzzer, see #84.
+---
+ libxslt/variables.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/libxslt/variables.c b/libxslt/variables.c
+index 883b19af..c0055c21 100644
+--- a/libxslt/variables.c
++++ b/libxslt/variables.c
+@@ -1310,8 +1310,13 @@ xsltEvalGlobalVariables(xsltTransformContextPtr ctxt) {
+ 	    if (def == NULL) {
+ 
+ 		def = xsltCopyStackElem(elem);
+-		xmlHashAddEntry2(ctxt->globalVars,
+-				 elem->name, elem->nameURI, def);
++		if (xmlHashAddEntry2(ctxt->globalVars,
++				     elem->name, elem->nameURI, def) < 0) {
++                    xmlGenericError(xmlGenericErrorContext,
++                                    "hash update failed\n");
++                    xsltFreeStackElem(def);
++                    return(-1);
++                }
+ 	    } else if ((elem->comp != NULL) &&
+ 		       (elem->comp->type == XSLT_FUNC_VARIABLE)) {
+ 		/*
+-- 
+2.47.2
+

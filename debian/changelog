@@ -1,3 +1,18 @@
+libxslt (1.1.35-1+pexip24u5+deb12u2) pexip; urgency=medium
+
+  * New upstream release with security fixes
+
+ -- Steve McIntyre <steve.mcintyre@pexip.com>  Mon, 01 Sep 2025 11:57:22 +0100
+
+libxslt (1.1.35-1+deb12u2) bookworm-security; urgency=high
+
+  * Fix information disclosure with improved memory handling of generated-id()
+    (Closes: #1108074, CVE-2023-40403)
+  * Fix type confusion in xmlNode.psvi between stylesheet and source nodes
+    (Closes: #1109123, CVE-2025-7424)
+
+ -- Aron Xu <aron@debian.org>  Mon, 18 Aug 2025 01:31:08 +0800
+
 libxslt (1.1.35-1+pexip24u4+deb12u1) pexip; urgency=medium
 
   * New upstream release with security fixes
