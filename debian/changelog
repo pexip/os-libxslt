@@ -1,3 +1,11 @@
+libxslt (1.1.35-1+deb12u3) bookworm-security; urgency=high
+
+  * Non-maintainer upload.
+  * Fix regression in the backport of upstream change for issue #123
+    "generate-id() is non-deterministic".
+
+ -- Guilhem Moulin <guilhem@debian.org>  Mon, 22 Sep 2025 09:45:22 +0200
+
 libxslt (1.1.35-1+deb12u2) bookworm-security; urgency=high
 
   * Fix information disclosure with improved memory handling of generated-id()
