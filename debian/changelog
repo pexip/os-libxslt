@@ -1,3 +1,20 @@
+libxslt (1.1.35-1.2+deb13u2) trixie-security; urgency=high
+
+  * Non-maintainer upload.
+  * Fix regression in the backport of upstream change for issue #123
+    "generate-id() is non-deterministic".
+
+ -- Guilhem Moulin <guilhem@debian.org>  Mon, 22 Sep 2025 09:36:44 +0200
+
+libxslt (1.1.35-1.2+deb13u1) trixie-security; urgency=medium
+
+  * Fix information disclosure with improved memory handling of generated-id()
+    (Closes: #1108074, CVE-2023-40403)
+  * Fix type confusion in xmlNode.psvi between stylesheet and source nodes
+    (Closes: #1109123, CVE-2025-7424)
+
+ -- Aron Xu <aron@debian.org>  Wed, 13 Aug 2025 19:12:53 +0800
+
 libxslt (1.1.35-1.2) unstable; urgency=medium
 
   * Non-maintainer upload.
