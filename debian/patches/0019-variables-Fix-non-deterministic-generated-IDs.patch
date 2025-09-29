@@ -7,14 +7,17 @@ Evaluate global variables in deterministic order. Otherwise, generated
 IDs could be non-deterministic if generate-id() is called.
 
 Fixes #123.
+
+Origin: https://gitlab.gnome.org/GNOME/libxslt/-/commit/c45ed81aeb50a7fb6799a166270d6ccc9ffa63b2
+Bug: https://gitlab.gnome.org/GNOME/libxslt/-/issues/123
 ---
  libxslt/variables.c | 24 +++++++++++++++---------
  1 file changed, 15 insertions(+), 9 deletions(-)
 
-Index: libxslt-1.1.35/libxslt/variables.c
-===================================================================
---- libxslt-1.1.35.orig/libxslt/variables.c
-+++ libxslt-1.1.35/libxslt/variables.c
+diff --git a/libxslt/variables.c b/libxslt/variables.c
+index ec3929c..d92ae71 100644
+--- a/libxslt/variables.c
++++ b/libxslt/variables.c
 @@ -1258,13 +1258,6 @@ error:
      return(result);
  }
@@ -29,7 +32,7 @@ Index: libxslt-1.1.35/libxslt/variables.c
  /**
   * xsltEvalGlobalVariables:
   * @ctxt:  the XSLT transformation context
-@@ -1277,6 +1270,7 @@ xsltEvalGlobalVariableWrapper(void *payl
+@@ -1277,6 +1270,7 @@ xsltEvalGlobalVariableWrapper(void *payload, void *data,
  int
  xsltEvalGlobalVariables(xsltTransformContextPtr ctxt) {
      xsltStackElemPtr elem;
@@ -37,7 +40,16 @@ Index: libxslt-1.1.35/libxslt/variables.c
      xsltStylesheetPtr style;
  
      if ((ctxt == NULL) || (ctxt->document == NULL))
-@@ -1337,9 +1331,19 @@ xsltEvalGlobalVariables(xsltTransformCon
+@@ -1320,6 +1314,8 @@ xsltEvalGlobalVariables(xsltTransformContextPtr ctxt) {
+                     xsltFreeStackElem(def);
+                     return(-1);
+                 }
++                def->next = head;
++                head = def;
+ 	    } else if ((elem->comp != NULL) &&
+ 		       (elem->comp->type == XSLT_FUNC_VARIABLE)) {
+ 		/*
+@@ -1342,9 +1338,19 @@ xsltEvalGlobalVariables(xsltTransformContextPtr ctxt) {
      }
  
      /*
