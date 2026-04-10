@@ -15,3 +15,4 @@
 0019-variables-Fix-non-deterministic-generated-IDs.patch
 0020-Clean-up-attributes-in-source-doc.patch
 gnome-libxslt-bug-139-apple-fix.diff
+0021-generate-id-store-ids-out-of-band.patch

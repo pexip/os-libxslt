@@ -1,3 +1,12 @@
+libxslt (1.1.35-1.2+deb13u3) trixie; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix deterministic generate-id() regression introduced in previous fix by
+    moving the stable ID generation into a per-transform, per-document hash
+    table. (Closes: #1114928)
+
+ -- Miao Wang <shankerwangmiao@gmail.com>  Fri, 10 Apr 2026 06:56:30 +0000
+
 libxslt (1.1.35-1.2+deb13u2) trixie-security; urgency=high
 
   * Non-maintainer upload.
