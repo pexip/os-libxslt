@@ -1,0 +1,281 @@
+From: Aron Xu <aron@debian.org>
+Date: Thu, 1 Apr 2026 20:31:54 +0800
+Subject: [PATCH] generate-id: store deterministic IDs out-of-band
+Forwarded: not-needed
+
+The deterministic generate-id() backport stores IDs in xmlNode.psvi.
+That collides with pre-existing psvi users in libxslt and libxml2,
+including result tree fragment bookkeeping, and triggers runtime
+failures such as: generate-id(): psvi already set
+
+Move generated IDs into a per-transform, per-document hash table
+instead. Purge per-document tables when documents or RVTs are freed
+or returned to the RVT cache so stale node addresses cannot be reused.
+
+This keeps deterministic generate-id() without hijacking psvi.
+
+Index: libxslt-1.1.35/libxslt/xsltInternals.h
+===================================================================
+--- libxslt-1.1.35.orig/libxslt/xsltInternals.h
++++ libxslt-1.1.35/libxslt/xsltInternals.h
+@@ -1788,7 +1788,11 @@
+     unsigned long opCount;
+     int sourceDocDirty;
+     unsigned long currentId; /* For generate-id() */
+-};
++    xmlHashTablePtr generatedIds; /* per-doc node->ID tables */
++};
++
++void xsltFreeGeneratedIds(xsltTransformContextPtr ctxt);
++void xsltFreeGeneratedIdsForDoc(xsltTransformContextPtr ctxt, xmlDocPtr doc);
+ 
+ /**
+  * CHECK_STOPPED:
+Index: libxslt-1.1.35/libxslt/functions.c
+===================================================================
+--- libxslt-1.1.35.orig/libxslt/functions.c
++++ libxslt-1.1.35/libxslt/functions.c
+@@ -53,6 +53,73 @@
+  * in the list of decent XSLT processors <grin/>
+  */
+ #define DOCBOOK_XSL_HACK
++
++#define XSLT_GENID_KEYSIZE (2 + sizeof(void *) * 2 + 1)
++
++static void
++xsltGenIdBuildKey(const void *ptr, xmlChar *buf)
++{
++    snprintf((char *) buf, XSLT_GENID_KEYSIZE, "%p", ptr);
++}
++
++static void
++xsltFreeGeneratedIdsDocEntry(void *payload, const xmlChar *name ATTRIBUTE_UNUSED)
++{
++    xmlHashFree((xmlHashTablePtr) payload, NULL);
++}
++
++static xmlHashTablePtr
++xsltGetGeneratedIdsForDoc(xsltTransformContextPtr ctxt, xmlDocPtr doc, int create)
++{
++    xmlHashTablePtr table;
++    xmlChar key[XSLT_GENID_KEYSIZE];
++
++    if ((ctxt == NULL) || (doc == NULL))
++        return(NULL);
++
++    if (ctxt->generatedIds == NULL) {
++        if (!create)
++            return(NULL);
++        ctxt->generatedIds = xmlHashCreate(8);
++        if (ctxt->generatedIds == NULL)
++            return(NULL);
++    }
++
++    xsltGenIdBuildKey(doc, key);
++    table = (xmlHashTablePtr) xmlHashLookup(ctxt->generatedIds, key);
++    if ((table == NULL) && create) {
++        table = xmlHashCreate(64);
++        if (table == NULL)
++            return(NULL);
++        if (xmlHashAddEntry(ctxt->generatedIds, key, table) < 0) {
++            xmlHashFree(table, NULL);
++            return(NULL);
++        }
++    }
++
++    return(table);
++}
++
++void
++xsltFreeGeneratedIdsForDoc(xsltTransformContextPtr ctxt, xmlDocPtr doc)
++{
++    xmlChar key[XSLT_GENID_KEYSIZE];
++
++    if ((ctxt == NULL) || (ctxt->generatedIds == NULL) || (doc == NULL))
++        return;
++
++    xsltGenIdBuildKey(doc, key);
++    xmlHashRemoveEntry(ctxt->generatedIds, key, xsltFreeGeneratedIdsDocEntry);
++}
++
++void
++xsltFreeGeneratedIds(xsltTransformContextPtr ctxt)
++{
++    if ((ctxt != NULL) && (ctxt->generatedIds != NULL)) {
++        xmlHashFree(ctxt->generatedIds, xsltFreeGeneratedIdsDocEntry);
++        ctxt->generatedIds = NULL;
++    }
++}
+ 
+ /**
+  * xsltXPathFunctionLookup:
+@@ -710,11 +777,14 @@
+     xsltTransformContextPtr tctxt;
+     xmlNodePtr cur = NULL;
+     xmlXPathObjectPtr obj = NULL;
++    xmlDocPtr doc = NULL;
++    xmlHashTablePtr docIds = NULL;
++    void *payload;
+     char *str;
+     const xmlChar *nsPrefix = NULL;
+-    void **psviPtr;
+     unsigned long id;
+     size_t size, nsPrefixSize;
++    xmlChar key[XSLT_GENID_KEYSIZE];
+ 
+     tctxt = xsltXPathGetTransformContext(ctxt);
+ 
+@@ -765,27 +835,45 @@
+         cur = (xmlNodePtr) ns->next;
+     }
+ 
+-    psviPtr = xsltGetPSVIPtr(cur);
+-    if (psviPtr == NULL) {
++    switch (cur->type) {
++        case XML_DOCUMENT_NODE:
++        case XML_HTML_DOCUMENT_NODE:
++            doc = (xmlDocPtr) cur;
++            break;
++        case XML_ATTRIBUTE_NODE:
++            doc = ((xmlAttrPtr) cur)->doc;
++            break;
++        case XML_ELEMENT_NODE:
++        case XML_TEXT_NODE:
++        case XML_CDATA_SECTION_NODE:
++        case XML_PI_NODE:
++        case XML_COMMENT_NODE:
++            doc = cur->doc;
++            break;
++        default:
++            doc = NULL;
++    }
++
++    if (doc == NULL) {
+         xsltTransformError(tctxt, NULL, NULL,
+                 "generate-id(): invalid node type %d\n", cur->type);
+         ctxt->error = XPATH_INVALID_TYPE;
+         goto out;
+     }
+ 
+-    if (xsltGetSourceNodeFlags(cur) & XSLT_SOURCE_NODE_HAS_ID) {
+-        id = (unsigned long) *psviPtr;
++    docIds = xsltGetGeneratedIdsForDoc(tctxt, doc, 1);
++    if (docIds == NULL) {
++        xsltTransformError(tctxt, NULL, NULL,
++                "generate-id(): out of memory\n");
++        ctxt->error = XPATH_MEMORY_ERROR;
++        goto out;
++    }
++
++    xsltGenIdBuildKey(cur, key);
++    payload = xmlHashLookup(docIds, key);
++    if (payload != NULL) {
++        id = (unsigned long) (size_t) payload;
+     } else {
+-        if (cur->type == XML_TEXT_NODE && cur->line == USHRT_MAX) {
+-            /* Text nodes store big line numbers in psvi. */
+-            cur->line = 0;
+-        } else if (*psviPtr != NULL) {
+-            xsltTransformError(tctxt, NULL, NULL,
+-                    "generate-id(): psvi already set\n");
+-            ctxt->error = XPATH_MEMORY_ERROR;
+-            goto out;
+-        }
+-
+         if (tctxt->currentId == ULONG_MAX) {
+             xsltTransformError(tctxt, NULL, NULL,
+                     "generate-id(): id overflow\n");
+@@ -794,8 +882,12 @@
+         }
+ 
+         id = ++tctxt->currentId;
+-        *psviPtr = (void *) id;
+-        xsltSetSourceNodeFlags(tctxt, cur, XSLT_SOURCE_NODE_HAS_ID);
++        if (xmlHashAddEntry(docIds, key, (void *) (size_t) id) < 0) {
++            xsltTransformError(tctxt, NULL, NULL,
++                    "generate-id(): out of memory\n");
++            ctxt->error = XPATH_MEMORY_ERROR;
++            goto out;
++        }
+     }
+ 
+     str = xmlMalloc(size);
+Index: libxslt-1.1.35/libxslt/variables.c
+===================================================================
+--- libxslt-1.1.35.orig/libxslt/variables.c
++++ libxslt-1.1.35/libxslt/variables.c
+@@ -352,6 +352,7 @@
+ 	return;
+ 
+     if (ctxt && (ctxt->cache->nbRVT < 40)) {
++        xsltFreeGeneratedIdsForDoc(ctxt, RVT);
+ 	/*
+ 	* Store the Result Tree Fragment.
+ 	* Free the document info.
+@@ -397,6 +398,8 @@
+     /*
+     * Free it.
+     */
++    if (ctxt != NULL)
++        xsltFreeGeneratedIdsForDoc(ctxt, RVT);
+     if (RVT->_private != NULL) {
+ 	xsltFreeDocumentKeys((xsltDocumentPtr) RVT->_private);
+ 	xmlFree(RVT->_private);
+@@ -451,6 +454,7 @@
+     cur = ctxt->localRVT;
+     while (cur != NULL) {
+         next = (xmlDocPtr) cur->next;
++        xsltFreeGeneratedIdsForDoc(ctxt, cur);
+ 	if (cur->_private != NULL) {
+ 	    xsltFreeDocumentKeys(cur->_private);
+ 	    xmlFree(cur->_private);
+@@ -465,6 +469,7 @@
+     cur = ctxt->tmpRVT;
+     while (cur != NULL) {
+         next = (xmlDocPtr) cur->next;
++        xsltFreeGeneratedIdsForDoc(ctxt, cur);
+ 	if (cur->_private != NULL) {
+ 	    xsltFreeDocumentKeys(cur->_private);
+ 	    xmlFree(cur->_private);
+@@ -479,6 +484,7 @@
+     cur = ctxt->persistRVT;
+     while (cur != NULL) {
+         next = (xmlDocPtr) cur->next;
++        xsltFreeGeneratedIdsForDoc(ctxt, cur);
+ 	if (cur->_private != NULL) {
+ 	    xsltFreeDocumentKeys(cur->_private);
+ 	    xmlFree(cur->_private);
+Index: libxslt-1.1.35/libxslt/documents.c
+===================================================================
+--- libxslt-1.1.35.orig/libxslt/documents.c
++++ libxslt-1.1.35/libxslt/documents.c
+@@ -255,6 +255,8 @@
+     while (cur != NULL) {
+ 	doc = cur;
+ 	cur = cur->next;
++        if (doc->doc != NULL)
++            xsltFreeGeneratedIdsForDoc(ctxt, doc->doc);
+ 	xsltFreeDocumentKeys(doc);
+ 	if (!doc->main)
+ 	    xmlFreeDoc(doc->doc);
+@@ -264,6 +266,8 @@
+     while (cur != NULL) {
+ 	doc = cur;
+ 	cur = cur->next;
++        if (doc->doc != NULL)
++            xsltFreeGeneratedIdsForDoc(ctxt, doc->doc);
+ 	xsltFreeDocumentKeys(doc);
+ 	if (!doc->main)
+ 	    xmlFreeDoc(doc->doc);
+Index: libxslt-1.1.35/libxslt/transform.c
+===================================================================
+--- libxslt-1.1.35.orig/libxslt/transform.c
++++ libxslt-1.1.35/libxslt/transform.c
+@@ -757,6 +757,7 @@
+     xsltFreeDocuments(ctxt);
+     xsltFreeCtxtExts(ctxt);
+     xsltFreeRVTs(ctxt);
++    xsltFreeGeneratedIds(ctxt);
+     xsltTransformCacheFree(ctxt->cache);
+     xmlDictFree(ctxt->dict);
+ #ifdef WITH_XSLT_DEBUG
